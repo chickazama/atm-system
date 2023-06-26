@@ -3,7 +3,9 @@
 #include "system.h"
 
 int main(int argc, char* argv[]) {
-    int x = run_main_menu();
-    printf("%d\n", x);
-    return 0;
+    int selection;
+    do {
+	selection = run_main_menu();
+    } while (selection <= 0);
+    return EXIT_SUCCESS;
 }
