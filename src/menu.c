@@ -3,7 +3,7 @@
 
 const char* title = "=== 01Founders ATM System ===";
 
-void main_menu(void) {
+void print_main_menu(void) {
     printf("%s\n", title);
     printf("\nWelcome to the 01Founders ATM.\n");
     printf("\n[1] - Register\n");
@@ -11,7 +11,7 @@ void main_menu(void) {
     printf("\n[3] - Exit\n");
 }
 
-void profile_menu(char* user_name) {
+void print_profile_menu(char* user_name) {
     printf("%s\n", title);
     printf("\nProfile - %s\n", user_name);
     printf("\n[1] - My Accounts\n");
