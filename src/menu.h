@@ -3,3 +3,4 @@
 #endif
 
 void main_menu(void);
+void profile_menu(char*);
