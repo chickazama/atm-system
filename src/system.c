@@ -38,10 +38,9 @@ int main_menu(void) {
     return selection;
 }
 
-int login_menu(struct user* u) {
-    system("clear");
-    printf("Username: ");
+int get_user(struct user* u) {
     char buf[BUF_LEN];
+    printf("Username: ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
 	    perror("fgets");
 	    return -1;
@@ -58,6 +57,20 @@ int login_menu(struct user* u) {
     }
     buf[strlen(buf)-1] = '\0';
     strcpy(u->password, buf);
+    return 0;
+}
+
+int register_menu(struct user* u) {
+    system("clear");
+    get_user(u);
+    if ( user_exists(u) == 0 )
+	    return 0;
+    return 1;
+}
+
+int login_menu(struct user* u) {
+    system("clear");
+    get_user(u);
     if ( user_exists(u) == 1 && check_password(u) == 1)
 	    return 0;
     return 1;

@@ -12,12 +12,17 @@ int main(int argc, char* argv[]) {
     } while (selection <= 0);
 
     switch (selection) {
+        int res;
         case 1:
             printf("\nLoading register menu...\n");
+            res = register_menu(&u);
+            printf("Username: %s\n", u.username);
+            printf("Password: %s\n", u.password);
+            printf("%d\n", res);
             break;
         case 2:
             //printf("\nLoading login menu...\n");
-            int res = login_menu(&u);
+            res = login_menu(&u);
             printf("Username: %s\n", u.username);
             printf("Password: %s\n", u.password);
             printf("%d\n", res);
@@ -28,5 +33,6 @@ int main(int argc, char* argv[]) {
         default:
             exit(EXIT_FAILURE);
     }
+
     return EXIT_SUCCESS;
 }
