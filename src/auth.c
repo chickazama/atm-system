@@ -8,3 +8,5 @@ int username_exists(char* username) {
 	    return 1;
     return 0;
 }
+
+
