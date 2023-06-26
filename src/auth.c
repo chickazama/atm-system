@@ -9,4 +9,10 @@ int user_exists(struct user* u) {
     return 0;
 }
 
+int check_password(struct user* u) {
+    if ( strcmp(u->password, "password") == 0 )
+	    return 1;
+    return 0;
+}
+
 

@@ -58,7 +58,7 @@ int login_menu(struct user* u) {
     }
     buf[strlen(buf)-1] = '\0';
     strcpy(u->password, buf);
-    if ( user_exists(u) == 1 )
+    if ( user_exists(u) == 1 && check_password(u) == 1)
 	    return 0;
     return 1;
 }
