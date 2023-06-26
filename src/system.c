@@ -40,7 +40,7 @@ int main_menu(void) {
 
 int get_user(struct user* u) {
     char buf[BUF_LEN];
-    printf("Username: ");
+    printf("\nUsername: ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
 	    perror("fgets");
 	    return -1;
@@ -50,7 +50,7 @@ int get_user(struct user* u) {
     for (int i = 0; i < strlen(buf); i++) {
         buf[i] = '\0';
     }
-    printf("Password: ");
+    printf("\nPassword: ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
 	    perror("fgets");
 	    return -1;
@@ -62,6 +62,8 @@ int get_user(struct user* u) {
 
 int register_menu(struct user* u) {
     system("clear");
+    printf("=== Register ===\n");
+    // Check error on this
     get_user(u);
     if ( user_exists(u) == 0 )
 	    return 0;
@@ -70,6 +72,8 @@ int register_menu(struct user* u) {
 
 int login_menu(struct user* u) {
     system("clear");
+    printf("=== Login ===\n");
+    // Check error on this
     get_user(u);
     if ( user_exists(u) == 1 && check_password(u) == 1)
 	    return 0;
