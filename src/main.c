@@ -15,6 +15,7 @@ int run(int opt);
 int run_main_menu(void);
 int run_register_menu(struct user*);
 int run_login_menu(struct user*);
+int run_profile_menu(struct user*);
 
 int main(int argc, char* argv[]) {
     int opt = MAIN_MENU;
@@ -41,6 +42,8 @@ int run(int opt) {
             return run_register_menu(&u);
         case LOGIN_MENU:
             return run_login_menu(&u);
+        case PROFILE_MENU:
+            return run_profile_menu(&u);
         default:
             printf("not implemented.\n");
     }
@@ -58,7 +61,7 @@ int run_main_menu(void) {
         case 2:
             return LOGIN_MENU;
         case 3:
-            return 0;
+            return EXIT_SUCCESS;
     }
     return -1;
 }
@@ -83,4 +86,16 @@ int run_login_menu(struct user* u) {
             while (getchar() != '\n') ;
             return MAIN_MENU;
     }
+}
+
+int run_profile_menu(struct user* u) {
+    int selection;
+    do {
+        selection = profile_menu(u);
+    } while (selection <= 0);
+    switch (selection) {
+        case 2:
+            return MAIN_MENU;
+    }
+    return -1;
 }

@@ -14,7 +14,7 @@ void print_main_menu(void) {
 
 void print_profile_menu(struct user* u) {
     printf("%s\n", title);
-    printf("\nProfile - %s\n", u->username);
+    printf("\n=== Welcome '%s' ===\n", u->username);
     printf("\n[1] - My Accounts\n");
     printf("\n[2] - Log Out\n");
 }
