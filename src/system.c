@@ -38,7 +38,7 @@ int main_menu(void) {
     return selection;
 }
 
-int login_menu(void) {
+int login_menu(struct user* u) {
     system("clear");
     printf("Username: ");
     char buf[BUF_LEN];
@@ -47,8 +47,7 @@ int login_menu(void) {
 	    return -1;
     }
     buf[strlen(buf)-1] = '\0';
-    struct user u;
-    strcpy(u.username, buf);
+    strcpy(u->username, buf);
     for (int i = 0; i < strlen(buf); i++) {
         buf[i] = '\0';
     }
@@ -57,8 +56,9 @@ int login_menu(void) {
 	    perror("fgets");
 	    return -1;
     }
-    strcpy(u.password, buf);
-    if ( user_exists(&u) == 1 )
+    buf[strlen(buf)-1] = '\0';
+    strcpy(u->password, buf);
+    if ( user_exists(u) == 1 )
 	    return 0;
     return 1;
 }
