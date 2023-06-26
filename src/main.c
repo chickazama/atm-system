@@ -8,6 +8,7 @@
 #define REGISTER_MENU 2
 #define LOGIN_MENU 3
 #define PROFILE_MENU 4
+#define ACCOUNTS_MENU 5
 
 struct user u;
 
@@ -94,6 +95,8 @@ int run_profile_menu(struct user* u) {
         selection = profile_menu(u);
     } while (selection <= 0);
     switch (selection) {
+        case 1:
+            return ACCOUNTS_MENU;
         case 2:
             return MAIN_MENU;
     }

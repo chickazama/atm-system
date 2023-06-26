@@ -3,6 +3,7 @@
 
 #include "atm.h"
 
+int get_menu_selection(int);
 int main_menu(void);
 int get_user(struct user*);
 int register_menu(struct user*);
