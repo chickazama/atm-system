@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "atm.h"
 #include "auth.h"
 #include "menu.h"
 #include "system.h"
@@ -19,20 +20,20 @@ int main_menu(void) {
     // Get input from stdin
     char buf[BUF_LEN];
     if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
-	// Print out error message
-	perror("fgets");
-	return -1;
+        // Print out error message
+        perror("fgets");
+        return -1;
     }
     if (strlen(buf) != 2) {
-	printf("\n%s", err_msg);
-	while (getchar() != '\n') ;
-	return -1;
+        printf("\n%s", err_msg);
+        while (getchar() != '\n') ;
+        return -1;
     }
     int selection = atoi(buf);
     if (selection <= 0 || selection > MAIN_MENU_OPTS) {
-	printf("\n%s", err_msg);
-	while (getchar() != '\n') ;
-	return -1;
+        printf("\n%s", err_msg);
+        while (getchar() != '\n') ;
+        return -1;
     }
     return selection;
 }
@@ -42,11 +43,22 @@ int login_menu(void) {
     printf("Username: ");
     char buf[BUF_LEN];
     if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
-	perror("fgets");
+	    perror("fgets");
 	    return -1;
     }
     buf[strlen(buf)-1] = '\0';
-    if ( username_exists(buf) == 1 )
+    struct user u;
+    strcpy(u.username, buf);
+    for (int i = 0; i < strlen(buf); i++) {
+        buf[i] = '\0';
+    }
+    printf("Password: ");
+    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
+	    perror("fgets");
+	    return -1;
+    }
+    strcpy(u.password, buf);
+    if ( user_exists(&u) == 1 )
 	    return 0;
     return 1;
 }

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "atm.h"
 #include "menu.h"
 
 const char* title = "=== 01Founders ATM System ===";
