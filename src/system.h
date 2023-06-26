@@ -2,5 +2,5 @@
 #define SYSTEM_H
 #endif
 
-int run_main_menu(void);
-
+int main_menu(void);
+int login_menu(void);

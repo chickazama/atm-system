@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "auth.h"
 #include "menu.h"
 #include "system.h"
 
@@ -8,10 +9,11 @@
 #define MAIN_MENU_OPTS 3
 
 const char* err_msg = "Invalid menu selection. Press enter to try again. ";
-int run_main_menu(void) {
+
+int main_menu(void) {
     system("clear");
     // Print out Main Menu Display
-    main_menu();
+    print_main_menu();
     // Print prompt
     printf("\n> ");
     // Get input from stdin
@@ -33,4 +35,18 @@ int run_main_menu(void) {
 	return -1;
     }
     return selection;
+}
+
+int login_menu(void) {
+    system("clear");
+    printf("Username: ");
+    char buf[BUF_LEN];
+    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
+	perror("fgets");
+	    return -1;
+    }
+    buf[strlen(buf)-1] = '\0';
+    if ( username_exists(buf) == 1 )
+	    return 0;
+    return 1;
 }
