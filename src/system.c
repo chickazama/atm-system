@@ -8,7 +8,7 @@
 
 #define BUF_LEN 64
 #define MAIN_MENU_OPTS 3
-#define PROFILE_MENU_OPTS 4
+#define PROFILE_MENU_OPTS 3
 
 const char* err_msg = "Invalid menu selection. Press enter to try again. ";
 

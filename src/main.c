@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "atm.h"
 #include "menu.h"
 #include "system.h"
@@ -8,7 +9,8 @@
 #define REGISTER_MENU 2
 #define LOGIN_MENU 3
 #define PROFILE_MENU 4
-#define ACCOUNTS_MENU 5
+#define VIEW_ACCOUNTS_MENU 5
+#define OPEN_NEW_ACCOUNT_MENU 6
 
 int run(int opt);
 int run_main_menu(void);
@@ -46,7 +48,7 @@ int run(int opt) {
             return run_login_menu(&u);
         case PROFILE_MENU:
             return run_profile_menu(&u);
-        case ACCOUNTS_MENU:
+        case VIEW_ACCOUNTS_MENU:
             return run_accounts_menu(&u);
         default:
             printf("not implemented.\n");
@@ -98,9 +100,15 @@ int run_profile_menu(struct user* u) {
         selection = profile_menu(u);
     } while (selection <= 0);
     switch (selection) {
+        case 1:
+            return VIEW_ACCOUNTS_MENU;
+        case 2:
+            return OPEN_NEW_ACCOUNT_MENU;
         case 3:
-            return ACCOUNTS_MENU;
-        case 4:
+            strcpy(u->username, "\0");
+            strcpy(u->password, "\0");
+            printf("\nYou have successfully logged out. Press enter to return to the main menu. ");
+            while (getchar() != '\n') ;
             return MAIN_MENU;
     }
     return -1;
@@ -112,9 +120,11 @@ int run_accounts_menu(struct user* u) {
         selection = accounts_menu(u);
     } while (selection <= 0);
     switch (selection) {
+        case 1:
+            return VIEW_ACCOUNTS_MENU;
+        case 2:
+            return OPEN_NEW_ACCOUNT_MENU;
         case 3:
-            return ACCOUNTS_MENU;
-        case 4:
             return MAIN_MENU;
     }
     return -1;
