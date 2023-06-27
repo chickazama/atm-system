@@ -9,7 +9,7 @@ int get_user(struct user*);
 int register_menu(struct user*);
 int login_menu(struct user*);
 int profile_menu(struct user*);
-int accounts_menu(struct user*);
+int view_accounts_menu(struct user*);
 
 #endif
 

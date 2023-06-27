@@ -91,7 +91,7 @@ int profile_menu(struct user* u) {
     return get_menu_selection(PROFILE_MENU_OPTS);
 }
 
-int accounts_menu(struct user* u) {
+int view_accounts_menu(struct user* u) {
     system("clear");
     print_accounts_menu(u);
     return get_menu_selection(PROFILE_MENU_OPTS);

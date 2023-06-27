@@ -17,7 +17,7 @@ int run_main_menu(void);
 int run_register_menu(struct user*);
 int run_login_menu(struct user*);
 int run_profile_menu(struct user*);
-int run_accounts_menu(struct user*);
+int run_view_accounts_menu(struct user*);
 
 struct user u;
 
@@ -114,10 +114,10 @@ int run_profile_menu(struct user* u) {
     return -1;
 }
 
-int run_accounts_menu(struct user* u) {
+int run_view_accounts_menu(struct user* u) {
     int selection;
     do {
-        selection = accounts_menu(u);
+        selection = view_accounts_menu(u);
     } while (selection <= 0);
     switch (selection) {
         case 1:
