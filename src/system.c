@@ -13,6 +13,8 @@
 const char* err_msg = "Invalid menu selection. Press enter to try again. ";
 
 int get_menu_selection(int opts) {
+    // Print prompt
+    printf("\nEnter menu selection: ");
     // Get input from stdin
     char buf[BUF_LEN];
     if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
@@ -35,10 +37,7 @@ int get_menu_selection(int opts) {
 
 int main_menu(void) {
     system("clear");
-    // Print out Main Menu Display
     print_main_menu();
-    // Print prompt
-    printf("\n> ");
     return get_menu_selection(MAIN_MENU_OPTS);
 }
 
@@ -81,7 +80,6 @@ int login_menu(struct user* u) {
     printf("=== Login ===\n");
     // Check error on this
     get_user(u);
-
     if ( user_exists(u) == 1 && check_password(u) == 1)
 	    return 0;
     return -1;
@@ -90,7 +88,11 @@ int login_menu(struct user* u) {
 int profile_menu(struct user* u) {
     system("clear");
     print_profile_menu(u);
-    // Print prompt
-    printf("\n> ");
+    return get_menu_selection(PROFILE_MENU_OPTS);
+}
+
+int accounts_menu(struct user* u) {
+    system("clear");
+    print_accounts_menu(u);
     return get_menu_selection(PROFILE_MENU_OPTS);
 }

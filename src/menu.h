@@ -5,6 +5,7 @@
 
 void print_main_menu(void);
 void print_profile_menu(struct user*);
+void print_accounts_menu(struct user*);
 
 #endif
 

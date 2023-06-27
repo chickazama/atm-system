@@ -20,3 +20,10 @@ void print_profile_menu(struct user* u) {
     printf("\n[3] - My Accounts\n");
     printf("\n[4] - Log Out\n");
 }
+
+void print_accounts_menu(struct user* u) {
+    printf("%s\n", title);
+    printf("\n=== '%s' - Accounts ===\n", u->username);
+    // loop through and retrieve
+    printf("\n123456789\tcurrent\n");
+}

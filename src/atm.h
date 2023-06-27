@@ -14,7 +14,7 @@ struct record {
 	int accountNumber;
 	double balance;
 	char type[20];
-}
+};
 
 #endif
 
