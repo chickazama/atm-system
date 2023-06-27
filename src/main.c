@@ -49,7 +49,7 @@ int run(int opt) {
         case PROFILE_MENU:
             return run_profile_menu(&u);
         case VIEW_ACCOUNTS_MENU:
-            return run_accounts_menu(&u);
+            return run_view_accounts_menu(&u);
         default:
             printf("not implemented.\n");
     }
