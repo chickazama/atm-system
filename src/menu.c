@@ -17,12 +17,12 @@ void print_profile_menu(struct user* u) {
     printf("\n=== Welcome '%s' ===\n", u->username);
     // printf("\n[1] - Withdraw\n");
     // printf("\n[2] - Deposit\n");
-    printf("\n[1] - My Accounts\n");
+    printf("\n[1] - View Accounts\n");
     printf("\n[2] - Open New Account\n");
     printf("\n[3] - Log Out\n");
 }
 
-void print_accounts_menu(struct user* u) {
+void print_view_accounts_menu(struct user* u) {
     printf("%s\n", title);
     printf("\n=== '%s' - Accounts ===\n", u->username);
     // loop through and retrieve
