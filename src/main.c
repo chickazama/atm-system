@@ -10,13 +10,13 @@
 #define PROFILE_MENU 4
 #define ACCOUNTS_MENU 5
 
-struct user u;
-
 int run(int opt);
 int run_main_menu(void);
 int run_register_menu(struct user*);
 int run_login_menu(struct user*);
 int run_profile_menu(struct user*);
+
+struct user u;
 
 int main(int argc, char* argv[]) {
     int opt = MAIN_MENU;
@@ -95,9 +95,9 @@ int run_profile_menu(struct user* u) {
         selection = profile_menu(u);
     } while (selection <= 0);
     switch (selection) {
-        case 1:
+        case 3:
             return ACCOUNTS_MENU;
-        case 2:
+        case 4:
             return MAIN_MENU;
     }
     return -1;
