@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "atm.h"
-#include "menu.h"
 #include "system.h"
 
 #define MAIN_MENU 1
@@ -13,12 +12,12 @@
 #define OPEN_NEW_ACCOUNT_MENU 6
 
 int run(int opt);
-int run_main_menu(void);
-int run_register_menu(struct user*);
-int run_login_menu(struct user*);
-int run_profile_menu(struct user*);
-int run_view_accounts_menu(struct user*);
-int run_create_account_menu(struct user*, struct record*);
+// int run_main_menu(void);
+// int run_register_menu(struct user*);
+// int run_login_menu(struct user*);
+// int run_profile_menu(struct user*);
+// int run_view_accounts_menu(struct user*);
+// int run_create_account_menu(struct user*, struct record*);
 
 struct user u;
 struct record r;
@@ -43,105 +42,19 @@ int main(int argc, char* argv[]) {
 int run(int opt) {
     switch (opt) {
         case MAIN_MENU:
-            return run_main_menu();
+            return main_menu();
         case REGISTER_MENU:
-            return run_register_menu(&u);
+            return register_user(&u);
         case LOGIN_MENU:
-            return run_login_menu(&u);
+            return login_user(&u);
         case PROFILE_MENU:
-            return run_profile_menu(&u);
-        case VIEW_ACCOUNTS_MENU:
-            return run_view_accounts_menu(&u);
-        case OPEN_NEW_ACCOUNT_MENU:
-            return run_create_account_menu(&u, &r);
+            return profile_menu(&u);
+        // case VIEW_ACCOUNTS_MENU:
+        //     return run_view_accounts_menu(&u);
+        // case OPEN_NEW_ACCOUNT_MENU:
+        //     return run_create_account_menu(&u, &r);
         default:
             printf("not implemented.\n");
     }
     return -1;
-}
-
-int run_main_menu(void) {
-    int selection;
-    do {
-	    selection = main_menu();
-    } while (selection <= 0);
-    switch (selection) {
-        case 1:
-            return REGISTER_MENU;
-        case 2:
-            return LOGIN_MENU;
-        case 3:
-            return EXIT_SUCCESS;
-    }
-    return -1;
-}
-
-int run_register_menu(struct user* u) {
-    switch (register_menu(u)) {
-        case 0:
-            return PROFILE_MENU;
-        default:
-            printf("\nA user with the name '%s' already exists. Press enter to return to main menu. ", u->username);
-            while (getchar() != '\n') ;
-            return MAIN_MENU;
-    }
-}
-
-int run_login_menu(struct user* u) {
-    switch (login_menu(u)) {
-        case 0:
-            return PROFILE_MENU;
-        default:
-            printf("\nIncorrect username or password. Press enter to return to main menu. ");
-            while (getchar() != '\n') ;
-            return MAIN_MENU;
-    }
-}
-
-int run_profile_menu(struct user* u) {
-    int selection;
-    do {
-        selection = profile_menu(u);
-    } while (selection <= 0);
-    switch (selection) {
-        case 1:
-            return VIEW_ACCOUNTS_MENU;
-        case 2:
-            return OPEN_NEW_ACCOUNT_MENU;
-        case 3:
-            strcpy(u->username, "\0");
-            strcpy(u->password, "\0");
-            printf("\nYou have successfully logged out. Press enter to return to the main menu. ");
-            while (getchar() != '\n') ;
-            return MAIN_MENU;
-    }
-    return -1;
-}
-
-int run_view_accounts_menu(struct user* u) {
-    int selection;
-    do {
-        selection = view_accounts_menu(u);
-    } while (selection <= 0);
-    switch (selection) {
-        case 1:
-            return VIEW_ACCOUNTS_MENU;
-        case 2:
-            return OPEN_NEW_ACCOUNT_MENU;
-        case 3:
-            return MAIN_MENU;
-    }
-    return -1;
-}
-
-int run_create_account_menu(struct user* u, struct record* r) {
-    int selection = set_account_info(u, r);
-    switch (selection) {
-        case 0:
-            return PROFILE_MENU;
-        default:
-            printf("Error creating account. Press enter to return to your profile. ");
-            while (getchar() != '\n') ;
-            return PROFILE_MENU;
-    }
 }

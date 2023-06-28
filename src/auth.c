@@ -4,6 +4,7 @@
 #include "auth.h"
 
 int user_exists(struct user* u) {
+    // Get all users from file, and check
     if ( strcmp(u->username, "test") == 0 )
 	    return 1;
     return 0;

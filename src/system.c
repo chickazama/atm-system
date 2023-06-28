@@ -3,165 +3,141 @@
 #include <string.h>
 #include "atm.h"
 #include "auth.h"
-#include "menu.h"
+#include "input.h"
 #include "system.h"
 
-#define BUF_LEN 64
-#define MAIN_MENU_OPTS 3
-#define PROFILE_MENU_OPTS 3
+const char* TITLE = "=== 01Founders ATM System ===";
 
-const char* err_msg = "Invalid menu selection. Press enter to try again. ";
-
-int get_menu_selection(int opts) {
-    // Print prompt
-    printf("\nEnter menu selection: ");
-    // Get input from stdin
-    char buf[BUF_LEN];
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
-        // Print out error message
-        perror("fgets");
-        return -1;
-    }
-    if (strlen(buf) != 2) {
-        printf("\n%s", err_msg);
-        while (getchar() != '\n') ;
-        return -1;
-    }
-    int selection = atoi(buf);
-    if (selection <= 0 || selection > opts) {
-        printf("\n%s", err_msg);
-        while (getchar() != '\n') ;
-        return -1;
-    }
-}
-
+// Run Menus
 int main_menu(void) {
-    system("clear");
-    print_main_menu();
-    return get_menu_selection(MAIN_MENU_OPTS);
-}
-
-int set_user(struct user* u) {
-    char buf[BUF_LEN];
-    printf("\nUsername: ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
-	    perror("fgets");
-	    return -1;
+    int ret;
+    do {
+        system("clear");
+        printf("%s\n", TITLE);
+        printf("\nWelcome to the 01Founders ATM.\n");
+        printf("\n[1] - Register\n");
+        printf("\n[2] - Login\n");
+        printf("\n[3] - Exit\n");
+        ret = input_menu_selection(MAIN_MENU_OPTS);
+    } while (ret <= 0);
+    switch (ret) {
+        case 1:
+            return REGISTER_MENU;
+        case 2:
+            return LOGIN_MENU;
+        case 3:
+            return EXIT_SUCCESS;
     }
-    buf[strlen(buf)-1] = '\0';
-    strcpy(u->username, buf);
-    for (int i = 0; i < strlen(buf); i++) {
-        buf[i] = '\0';
-    }
-    printf("\nPassword: ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
-	    perror("fgets");
-	    return -1;
-    }
-    buf[strlen(buf)-1] = '\0';
-    strcpy(u->password, buf);
-    return 0;
-}
-
-int register_menu(struct user* u) {
-    system("clear");
-    printf("=== 01Founders ATM System ===\n");
-    printf("\n=== Register ===\n");
-    if (set_user(u) != 0)
-        return -1;
-
-    if ( user_exists(u) != 0 )
-	    return -1;
-    
-    return 0;
-}
-
-int login_menu(struct user* u) {
-    system("clear");
-    printf("=== 01Founders ATM System ===\n");
-    printf("\n=== Login ===\n");
-    
-    if (set_user(u) != 0) 
-        return -1;
-
-    if ( user_exists(u) == 1 && check_password(u) == 1)
-	    return 0;
     return -1;
 }
 
-int profile_menu(struct user* u) {
-    system("clear");
-    print_profile_menu(u);
-    return get_menu_selection(PROFILE_MENU_OPTS);
+int profile_menu(struct user* u)
+{
+    int ret;
+
+    do {
+        system("clear");
+        printf("%s\n", TITLE);
+        printf("\n=== Welcome '%s' ===\n", u->username);
+        printf("\n[1] - View Accounts\n");
+        printf("\n[2] - Open New Account\n");
+        printf("\n[3] - Log Out\n");
+        ret = input_menu_selection(PROFILE_MENU_OPTS);
+    } while (ret <= 0);
+
+    switch (ret) {
+        case 1:
+            return VIEW_ACCOUNTS_MENU;
+        case 2:
+            return OPEN_NEW_ACCOUNT_MENU;
+        case 3:
+            logout_user(u);
+            printf("\nYou have successfully logged out. Press enter to return to the main menu. ");
+            while (getchar() != '\n') ;
+            return MAIN_MENU;
+    }
+
+    return -1;
 }
 
-int view_accounts_menu(struct user* u) {
-    system("clear");
-    print_view_accounts_menu(u);
-    return get_menu_selection(PROFILE_MENU_OPTS);
+int view_accounts_menu(struct user* u)
+{
+    // system("clear");
+    // print_view_accounts_menu(u);
+    // return input_menu_selection(PROFILE_MENU_OPTS);
+    return -1;
 }
 
-int set_account_info(struct user* u, struct record* r) {
+// User registration/login
+int register_user(struct user* u)
+{
     system("clear");
-    printf("=== 01Founders ATM System ===\n");
-    strcpy(r->owner, u->username);
-    char buf[BUF_LEN];
-    printf("\nAccount Number: ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
-        // Print out error message
-        perror("fgets");
+    printf("%s\n", TITLE);
+    printf("\n=== Register ===\n");
+
+    if ( input_user(u) == -1 )
+    {
+        printf("\nSorry, there was a problem with the registration. Press enter to return to main menu. ");
+        while (getchar() != '\n') ;
+        return MAIN_MENU;
+    }
+
+    if ( user_exists(u) )
+    {
+        printf("\nA user with the name '%s' already exists. Press enter to return to main menu. ", u->username);
+        while (getchar() != '\n') ;
+        return MAIN_MENU;
+    }
+
+    // Validate username and password here
+    
+    return PROFILE_MENU;
+}
+
+int login_user(struct user* u)
+{
+    system("clear");
+    printf("%s\n", TITLE);
+    printf("\n=== Login ===\n");
+
+    if ( input_user(u) == -1 ) 
+    {
+        printf("\nSorry, there was a problem with logging in. Press enter to return to main menu. ");
+        while (getchar() != '\n') ;
+        return MAIN_MENU;
+    }
+    // Try to get user from file
+    if (!user_exists(u))
+    {
+        printf("\nThe user '%s' does not exist. Please check spelling, or register a new account.\n", u->username);
+        printf("Press enter to return to main menu. ");
+        while (getchar() != '\n') ;
+        return MAIN_MENU;
+    }
+    // Check Correct Password
+    if ( !check_password(u) )
+    {
+        printf("\nIncorrect password. Press enter to return to main menu. ");
+        while (getchar() != '\n') ;
+        return MAIN_MENU;
+    }
+
+    return PROFILE_MENU;
+}
+
+void logout_user(struct user* u)
+{
+    memset(u->username, 0, 20);
+    memset(u->password, 0, 20);
+}
+
+// Data Access Wrapper
+int create_account(struct user* u, struct record* r)
+{
+    if ( input_create_account(u, r) == -1 )
         return -1;
-    }
-    buf[strlen(buf)-1] = '\0';
-    int accountNumber = atoi(buf);
-    if (accountNumber <= 0) {
-        return -1;
-    }
-    r->accountNumber = accountNumber;
-    // clear buffer
-    for (int i = 0; i < strlen(buf); i++) {
-        buf[i] = '\0';
-    }
-    printf("\nCountry: ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
-        // Print out error message
-        perror("fgets");
-        return -1;
-    }
-    buf[strlen(buf)-1] = '\0';
-    strcpy(r->country, buf);
-    // clear buffer
-    for (int i = 0; i < strlen(buf); i++) {
-        buf[i] = '\0';
-    }
-    printf("\nPhone Number: ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
-        // Print out error message
-        perror("fgets");
-        return -1;
-    }
-    buf[strlen(buf)-1] = '\0';
-    int phoneNumber = atoi(buf);
-    if (phoneNumber <= 0) {
-        return -1;
-    }
-    r->phoneNumber = phoneNumber;
-    // clear buffer
-    for (int i = 0; i < strlen(buf); i++) {
-        buf[i] = '\0';
-    }
-    printf("\nInitial Deposit (£): ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
-        // Print out error message
-        perror("fgets");
-        return -1;
-    }
-    buf[strlen(buf)-1] = '\0';
-    double balance = atof(buf);
-    if (balance <= 0) {
-        return -1;
-    }
-    r->balance = balance;
-    // printf("%s\n%d\n%s\n%d\n%.2f\n", r->owner, r->accountNumber, r->country, r->phoneNumber, r->balance);
+    // Write account to file
     return 0;
 }
+
+

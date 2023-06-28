@@ -5,6 +5,7 @@
 
 int user_exists(struct user*);
 int check_password(struct user*);
+
 #endif
 
 

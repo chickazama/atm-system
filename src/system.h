@@ -3,13 +3,27 @@
 
 #include "atm.h"
 
-int get_menu_selection(int);
+#define MAIN_MENU_OPTS 3
+#define PROFILE_MENU_OPTS 3
+#define MAIN_MENU 1
+#define REGISTER_MENU 2
+#define LOGIN_MENU 3
+#define PROFILE_MENU 4
+#define VIEW_ACCOUNTS_MENU 5
+#define OPEN_NEW_ACCOUNT_MENU 6
+
+// Menu functions
 int main_menu(void);
-int set_user(struct user*);
-int register_menu(struct user*);
-int login_menu(struct user*);
 int profile_menu(struct user*);
 int view_accounts_menu(struct user*);
-int set_account_info(struct user*, struct record*);
+
+// User registration/login/logout
+int register_user(struct user*);
+int login_user(struct user*);
+void logout_user(struct user*);
+
+
+// Data access wrappers
+int create_account(struct user*, struct record*);
 
 #endif
