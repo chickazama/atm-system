@@ -56,7 +56,7 @@ int input_user(struct user* u)
 	    return -1;
     }
     buf[strlen(buf)-1] = '\0';
-    strcpy(u->username, buf);
+    strncpy(u->username, buf, strlen(buf));
     for (int i = 0; i < strlen(buf); i++)
     {
         buf[i] = '\0';
@@ -68,7 +68,7 @@ int input_user(struct user* u)
 	    return -1;
     }
     buf[strlen(buf)-1] = '\0';
-    strcpy(u->password, buf);
+    strncpy(u->password, buf, strlen(buf));
     return 0;
 }
 
@@ -82,7 +82,7 @@ int input_create_account(struct user* u, struct record* r)
 {
     system("clear");
     printf("=== 01Founders ATM System ===\n");
-    strcpy(r->owner, u->username);
+    strncpy(r->owner, u->username, strlen(u->username));
     char buf[BUF_LEN];
     printf("\nAccount Number: ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL )
@@ -98,10 +98,7 @@ int input_create_account(struct user* u, struct record* r)
     }
     r->accountNumber = accountNumber;
     // clear buffer
-    for (int i = 0; i < strlen(buf); i++)
-    {
-        buf[i] = '\0';
-    }
+    memset(buf, 0, strlen(buf));
     printf("\nCountry: ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL )
     {
@@ -110,12 +107,9 @@ int input_create_account(struct user* u, struct record* r)
         return -1;
     }
     buf[strlen(buf)-1] = '\0';
-    strcpy(r->country, buf);
+    strncpy(r->country, buf, strlen(buf));
     // clear buffer
-    for (int i = 0; i < strlen(buf); i++)
-    {
-        buf[i] = '\0';
-    }
+    memset(buf, 0, strlen(buf));
     printf("\nPhone Number: ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL )
     {
@@ -131,10 +125,7 @@ int input_create_account(struct user* u, struct record* r)
     }
     r->phoneNumber = phoneNumber;
     // clear buffer
-    for (int i = 0; i < strlen(buf); i++)
-    {
-        buf[i] = '\0';
-    }
+    memset(buf, 0, strlen(buf));
     printf("\nInitial Deposit (£): ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL )
     {
