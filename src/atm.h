@@ -9,9 +9,11 @@ struct user {
 
 struct record {
 	int id;
+	char owner[20];
 	//date
-	char country[20];
 	int accountNumber;
+	char country[20];
+	int phoneNumber;
 	double balance;
 	char type[20];
 };
