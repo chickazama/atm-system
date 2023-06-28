@@ -12,24 +12,21 @@
 #define OPEN_NEW_ACCOUNT_MENU 6
 
 int run(int opt);
-// int run_main_menu(void);
-// int run_register_menu(struct user*);
-// int run_login_menu(struct user*);
-// int run_profile_menu(struct user*);
-// int run_view_accounts_menu(struct user*);
-// int run_create_account_menu(struct user*, struct record*);
 
 struct user u;
 struct record r;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
     int opt = MAIN_MENU;
 
-    do {
+    do
+    {
         opt = run(opt);
     } while (opt > 0);
 
-    switch (opt) {
+    switch (opt)
+    {
         case 0:
             printf("\nThank you for using ATM. Goodbye.\n");
         default:
@@ -39,8 +36,10 @@ int main(int argc, char* argv[]) {
     return opt;
 }
 
-int run(int opt) {
-    switch (opt) {
+int run(int opt)
+{
+    switch (opt)
+    {
         case MAIN_MENU:
             return main_menu();
         case REGISTER_MENU:
@@ -55,6 +54,8 @@ int run(int opt) {
         //     return run_create_account_menu(&u, &r);
         default:
             printf("not implemented.\n");
+            break;
     }
+
     return -1;
 }

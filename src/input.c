@@ -19,18 +19,22 @@ int input_menu_selection(int option_count)
     printf("\nEnter menu selection: ");
     // Get input from stdin
     char buf[BUF_LEN];
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
+    if ( fgets(buf, BUF_LEN, stdin) == NULL )
+    {
         // Print out error message
         perror("fgets");
         return -1;
     }
-    if (strlen(buf) != MENU_SELECTION_LEN) {
+
+    if (strlen(buf) != MENU_SELECTION_LEN)
+    {
         printf("\n%s", err_msg);
         while (getchar() != '\n') ;
         return -1;
     }
     int selection = atoi(buf);
-    if (selection <= 0 || selection > option_count) {
+    if (selection <= 0 || selection > option_count)
+    {
         printf("\n%s", err_msg);
         while (getchar() != '\n') ;
         return -1;
@@ -50,17 +54,20 @@ int input_user(struct user* u)
     // Define buffer, prompt user for input
     char buf[BUF_LEN];
     printf("\nUsername: ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
+    if ( fgets(buf, BUF_LEN, stdin) == NULL )
+    {
 	    // perror("fgets");
 	    return -1;
     }
     buf[strlen(buf)-1] = '\0';
     strcpy(u->username, buf);
-    for (int i = 0; i < strlen(buf); i++) {
+    for (int i = 0; i < strlen(buf); i++)
+    {
         buf[i] = '\0';
     }
     printf("\nPassword: ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
+    if ( fgets(buf, BUF_LEN, stdin) == NULL )
+    {
 	    // perror("fgets");
 	    return -1;
     }
@@ -82,7 +89,8 @@ int input_create_account(struct user* u, struct record* r)
     strcpy(r->owner, u->username);
     char buf[BUF_LEN];
     printf("\nAccount Number: ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
+    if ( fgets(buf, BUF_LEN, stdin) == NULL )
+    {
         // Print out error message
         perror("fgets");
         return -1;
@@ -94,11 +102,13 @@ int input_create_account(struct user* u, struct record* r)
     }
     r->accountNumber = accountNumber;
     // clear buffer
-    for (int i = 0; i < strlen(buf); i++) {
+    for (int i = 0; i < strlen(buf); i++)
+    {
         buf[i] = '\0';
     }
     printf("\nCountry: ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
+    if ( fgets(buf, BUF_LEN, stdin) == NULL )
+    {
         // Print out error message
         perror("fgets");
         return -1;
@@ -106,34 +116,40 @@ int input_create_account(struct user* u, struct record* r)
     buf[strlen(buf)-1] = '\0';
     strcpy(r->country, buf);
     // clear buffer
-    for (int i = 0; i < strlen(buf); i++) {
+    for (int i = 0; i < strlen(buf); i++)
+    {
         buf[i] = '\0';
     }
     printf("\nPhone Number: ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
+    if ( fgets(buf, BUF_LEN, stdin) == NULL )
+    {
         // Print out error message
         perror("fgets");
         return -1;
     }
     buf[strlen(buf)-1] = '\0';
     int phoneNumber = atoi(buf);
-    if (phoneNumber <= 0) {
+    if (phoneNumber <= 0)
+    {
         return -1;
     }
     r->phoneNumber = phoneNumber;
     // clear buffer
-    for (int i = 0; i < strlen(buf); i++) {
+    for (int i = 0; i < strlen(buf); i++)
+    {
         buf[i] = '\0';
     }
     printf("\nInitial Deposit (£): ");
-    if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
+    if ( fgets(buf, BUF_LEN, stdin) == NULL )
+    {
         // Print out error message
         perror("fgets");
         return -1;
     }
     buf[strlen(buf)-1] = '\0';
     double balance = atof(buf);
-    if (balance <= 0) {
+    if (balance <= 0)
+    {
         return -1;
     }
     r->balance = balance;

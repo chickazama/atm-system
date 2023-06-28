@@ -11,7 +11,8 @@ const char* TITLE = "=== 01Founders ATM System ===";
 // Run Menus
 int main_menu(void) {
     int ret;
-    do {
+    do
+    {
         system("clear");
         printf("%s\n", TITLE);
         printf("\nWelcome to the 01Founders ATM.\n");
@@ -20,7 +21,9 @@ int main_menu(void) {
         printf("\n[3] - Exit\n");
         ret = input_menu_selection(MAIN_MENU_OPTS);
     } while (ret <= 0);
-    switch (ret) {
+
+    switch (ret)
+    {
         case 1:
             return REGISTER_MENU;
         case 2:
@@ -35,7 +38,8 @@ int profile_menu(struct user* u)
 {
     int ret;
 
-    do {
+    do
+    {
         system("clear");
         printf("%s\n", TITLE);
         printf("\n=== Welcome '%s' ===\n", u->username);
@@ -45,7 +49,8 @@ int profile_menu(struct user* u)
         ret = input_menu_selection(PROFILE_MENU_OPTS);
     } while (ret <= 0);
 
-    switch (ret) {
+    switch (ret)
+    {
         case 1:
             return VIEW_ACCOUNTS_MENU;
         case 2:
@@ -139,5 +144,3 @@ int create_account(struct user* u, struct record* r)
     // Write account to file
     return 0;
 }
-
-

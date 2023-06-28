@@ -21,5 +21,3 @@ struct record {
 };
 
 #endif
-
-
