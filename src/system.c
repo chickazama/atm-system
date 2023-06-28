@@ -67,8 +67,8 @@ int register_menu(struct user* u) {
     system("clear");
     printf("=== 01Founders ATM System ===\n");
     printf("\n=== Register ===\n");
-    // Check error on this
-    set_user(u);
+    if (set_user(u) != 0)
+        return -1;
 
     if ( user_exists(u) != 0 )
 	    return -1;
@@ -80,8 +80,10 @@ int login_menu(struct user* u) {
     system("clear");
     printf("=== 01Founders ATM System ===\n");
     printf("\n=== Login ===\n");
-    // Check error on this
-    set_user(u);
+    
+    if (set_user(u) != 0) 
+        return -1;
+
     if ( user_exists(u) == 1 && check_password(u) == 1)
 	    return 0;
     return -1;
