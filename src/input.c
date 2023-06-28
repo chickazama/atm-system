@@ -47,10 +47,6 @@ int input_menu_selection(int option_count)
 // Returns -1 upon an fgets error (prints out error message).
 int input_user(struct user* u)
 {
-    // Clear User Details
-    strcpy(u->username, "\0");
-    strcpy(u->password, "\0");
-
     // Define buffer, prompt user for input
     char buf[BUF_LEN];
     printf("\nUsername: ");

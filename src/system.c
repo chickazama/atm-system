@@ -132,8 +132,8 @@ int login_user(struct user* u)
 
 void logout_user(struct user* u)
 {
-    memset(u->username, 0, 20);
-    memset(u->password, 0, 20);
+    memset(u->username, 0, strlen(u->username));
+    memset(u->password, 0, strlen(u->password));
 }
 
 // Data Access Wrapper
