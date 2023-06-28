@@ -78,7 +78,8 @@ int register_menu(struct user* u) {
 
 int login_menu(struct user* u) {
     system("clear");
-    printf("=== Login ===\n");
+    printf("=== 01Founders ATM System ===\n");
+    printf("\n=== Login ===\n");
     // Check error on this
     set_user(u);
     if ( user_exists(u) == 1 && check_password(u) == 1)
@@ -99,9 +100,11 @@ int view_accounts_menu(struct user* u) {
 }
 
 int set_account_info(struct user* u, struct record* r) {
+    system("clear");
+    printf("=== 01Founders ATM System ===\n");
     strcpy(r->owner, u->username);
     char buf[BUF_LEN];
-    printf("Account Number: ");
+    printf("\nAccount Number: ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
         // Print out error message
         perror("fgets");
@@ -117,7 +120,7 @@ int set_account_info(struct user* u, struct record* r) {
     for (int i = 0; i < strlen(buf); i++) {
         buf[i] = '\0';
     }
-    printf("Country: ");
+    printf("\nCountry: ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
         // Print out error message
         perror("fgets");
@@ -129,7 +132,7 @@ int set_account_info(struct user* u, struct record* r) {
     for (int i = 0; i < strlen(buf); i++) {
         buf[i] = '\0';
     }
-    printf("Phone Number: ");
+    printf("\nPhone Number: ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
         // Print out error message
         perror("fgets");
@@ -145,7 +148,7 @@ int set_account_info(struct user* u, struct record* r) {
     for (int i = 0; i < strlen(buf); i++) {
         buf[i] = '\0';
     }
-    printf("Initial Deposit (£): ");
+    printf("\nInitial Deposit (£): ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL ) {
         // Print out error message
         perror("fgets");
@@ -157,6 +160,6 @@ int set_account_info(struct user* u, struct record* r) {
         return -1;
     }
     r->balance = balance;
-    printf("%s\n%d\n%s\n%d\n%.2f\n", r->owner, r->accountNumber, r->country, r->phoneNumber, r->balance);
+    // printf("%s\n%d\n%s\n%d\n%.2f\n", r->owner, r->accountNumber, r->country, r->phoneNumber, r->balance);
     return 0;
 }

@@ -18,8 +18,10 @@ int run_register_menu(struct user*);
 int run_login_menu(struct user*);
 int run_profile_menu(struct user*);
 int run_view_accounts_menu(struct user*);
+int run_create_account_menu(struct user*, struct record*);
 
 struct user u;
+struct record r;
 
 int main(int argc, char* argv[]) {
     int opt = MAIN_MENU;
@@ -51,8 +53,7 @@ int run(int opt) {
         case VIEW_ACCOUNTS_MENU:
             return run_view_accounts_menu(&u);
         case OPEN_NEW_ACCOUNT_MENU:
-            struct record r;
-            return set_account_info(&u, &r);
+            return run_create_account_menu(&u, &r);
         default:
             printf("not implemented.\n");
     }
@@ -131,4 +132,16 @@ int run_view_accounts_menu(struct user* u) {
             return MAIN_MENU;
     }
     return -1;
+}
+
+int run_create_account_menu(struct user* u, struct record* r) {
+    int selection = set_account_info(u, r);
+    switch (selection) {
+        case 0:
+            return PROFILE_MENU;
+        default:
+            printf("Error creating account. Press enter to return to your profile. ");
+            while (getchar() != '\n') ;
+            return PROFILE_MENU;
+    }
 }
