@@ -3,14 +3,17 @@
 
 #include "atm.h"
 
-#define MAIN_MENU_OPTS 3
-#define PROFILE_MENU_OPTS 3
+// Menu Enumeration
 #define MAIN_MENU 1
 #define REGISTER_MENU 2
 #define LOGIN_MENU 3
 #define PROFILE_MENU 4
 #define VIEW_ACCOUNTS_MENU 5
 #define OPEN_NEW_ACCOUNT_MENU 6
+
+// Menu Option Counts
+#define MAIN_MENU_OPTS 3
+#define PROFILE_MENU_OPTS 3
 
 // Menu functions
 int main_menu(void);
