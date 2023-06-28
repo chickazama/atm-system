@@ -98,7 +98,7 @@ int view_accounts_menu(struct user* u) {
     return get_menu_selection(PROFILE_MENU_OPTS);
 }
 
-int get_account_info(struct user* u, struct record* r) {
+int set_account_info(struct user* u, struct record* r) {
     strcpy(r->owner, u->username);
     char buf[BUF_LEN];
     printf("Account Number: ");

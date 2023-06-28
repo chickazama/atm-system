@@ -52,7 +52,7 @@ int run(int opt) {
             return run_view_accounts_menu(&u);
         case OPEN_NEW_ACCOUNT_MENU:
             struct record r;
-            return get_account_info(&u, &r);
+            return set_account_info(&u, &r);
         default:
             printf("not implemented.\n");
     }
