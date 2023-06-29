@@ -4,7 +4,6 @@
 #include "atm.h"
 #include "include/sqlite3.h"
 
-int my_func(void);
-int create_users_table(sqlite3*);
+int create_users_table(void);
 
 #endif

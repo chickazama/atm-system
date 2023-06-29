@@ -6,17 +6,14 @@
 
 const char* CREATE_USERS_STMT = "CREATE TABLE IF NOT EXISTS \"users\" (\"id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"username\" nvarchar(20) UNIQUE NOT NULL, \"password\" nvarchar(20) NOT NULL);";
 
-int my_func(void) {
-    sqlite3* db;
-    sqlite3_stmt* stmt;
-    sqlite3_open("TestDB.db", &db); 
-    return create_users_table(db);
-}
+sqlite3* identity_db;
+sqlite3* records_db;
 
-int create_users_table(sqlite3* db)
+int create_users_table(void)
 {
+    sqlite3_open("data/TestDB.db", &identity_db);
     char* err;
-    int rc = sqlite3_exec(db, CREATE_USERS_STMT, NULL, NULL, &err);
+    int rc = sqlite3_exec(identity_db, CREATE_USERS_STMT, NULL, NULL, &err);
     if (rc != SQLITE_OK) {
         printf("%s\n", err);
         return rc;
