@@ -130,7 +130,10 @@ int create_user(struct user* u)
         printf("problem executing insert: %d\n", rc);
         return rc;
     }
-    sqlite3_finalize(stmt);
+    rc = sqlite3_finalize(stmt);
+    if (rc != SQLITE_OK) {
+        printf("problem finalising stmt: %d\n", rc);
+    }
     return rc;
 }
 
@@ -152,7 +155,10 @@ int delete_user(struct user* u)
         printf("problem executing delete: %d\n", rc);
         return rc;
     }
-    sqlite3_finalize(stmt);
+    rc = sqlite3_finalize(stmt);
+    if (rc != SQLITE_OK) {
+        printf("problem finalising stmt: %d\n", rc);
+    }
     return rc;
 }
 
@@ -183,7 +189,10 @@ int create_record(struct user* u, struct record* r)
         printf("problem executing insert: %d\n", rc);
         return rc;
     }
-    sqlite3_finalize(stmt);
+    rc = sqlite3_finalize(stmt);
+    if (rc != SQLITE_OK) {
+        printf("problem finalising stmt: %d\n", rc);
+    }
     return rc;
 }
 
