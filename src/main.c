@@ -11,6 +11,7 @@
 #define PROFILE_MENU 4
 #define VIEW_ACCOUNTS_MENU 5
 #define OPEN_NEW_ACCOUNT_MENU 6
+#define ACCOUNT_MENU 7
 
 int run(int opt);
 
@@ -57,9 +58,11 @@ int run(int opt)
         case PROFILE_MENU:
             return profile_menu(&u);
         case VIEW_ACCOUNTS_MENU:
-            return view_accounts_menu(&u);
+            return view_accounts_menu(&u, &r);
         case OPEN_NEW_ACCOUNT_MENU:
             return create_account(&u, &r);
+        case ACCOUNT_MENU:
+            return account_menu(&u, &r);
         default:
             printf("not implemented.\n");
             break;
