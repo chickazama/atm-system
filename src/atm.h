@@ -11,6 +11,7 @@ struct user {
 
 struct record {
 	int id;
+	int ownerId;
 	char owner[20];
 	int creationDate;
 	int accountNumber;
