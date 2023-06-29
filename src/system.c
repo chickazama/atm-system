@@ -146,6 +146,7 @@ int login_user(struct user* u)
 
 void logout_user(struct user* u)
 {
+    u->id = 0;
     memset(u->username, 0, strlen(u->username));
     memset(u->password, 0, strlen(u->password));
 }
