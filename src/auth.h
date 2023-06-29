@@ -3,7 +3,6 @@
 
 #include "atm.h"
 
-int user_exists(struct user*);
-int check_password(struct user*);
+int check_password(struct user*, struct user*);
 
 #endif
