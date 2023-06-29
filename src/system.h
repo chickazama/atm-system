@@ -11,6 +11,7 @@
 #define VIEW_ACCOUNTS_MENU 5
 #define OPEN_NEW_ACCOUNT_MENU 6
 #define ACCOUNT_MENU 7
+#define WITHDRAW 8
 
 // Menu Option Counts
 #define MAIN_MENU_OPTS 3
@@ -29,5 +30,6 @@ void logout_user(struct user*);
 
 // Data access wrappers
 int create_account(struct user*, struct record*);
+int withdraw(struct user*, struct record*);
 
 #endif

@@ -12,6 +12,7 @@
 #define VIEW_ACCOUNTS_MENU 5
 #define OPEN_NEW_ACCOUNT_MENU 6
 #define ACCOUNT_MENU 7
+#define WITHDRAW 8
 
 int run(int);
 void reset_user(struct user*);
@@ -68,6 +69,8 @@ int run(int opt)
             return create_account(&u, &r);
         case ACCOUNT_MENU:
             return account_menu(&u, &r);
+        case WITHDRAW:
+            return withdraw(&u, &r);
         default:
             printf("not implemented.\n");
             break;

@@ -112,8 +112,9 @@ int account_menu(struct user* u, struct record* r)
     do {
         system("clear");
         printf("%s\n", TITLE);
-        printf("\n=== '%s' - Account #%d ===\n", u->username, r->accountNumber);
-        printf("Balance: %d\n", r->balance);
+        printf("\n=== %s ===\n", u->username);
+        printf("\n=== Account #%d ===\n", r->accountNumber);
+        printf("Balance: £%.2f\n", (double)(r->balance)/100);
         printf("Country: %s\n", r->country);
         printf("\n[1] - Withdraw\n");
         printf("\n[2] - Deposit\n");
@@ -125,8 +126,8 @@ int account_menu(struct user* u, struct record* r)
 
     switch (ret)
     {
-        // case 1:
-        //     return VIEW_ACCOUNTS_MENU;
+        case 1:
+            return WITHDRAW;
         // case 2:
         //     return OPEN_NEW_ACCOUNT_MENU;
         case 5:
@@ -237,4 +238,39 @@ int create_account(struct user* u, struct record* r)
     printf("Account created successfully. Press enter to return to your profile. ");
     while (getchar() != '\n') ;
     return PROFILE_MENU;
+}
+
+int withdraw(struct user* u, struct record* r)
+{
+    system("clear");
+    printf("%s\n", TITLE);
+    printf("\n=== %s ===\n", u->username);
+    printf("\n=== Account #%d ===\n", r->accountNumber);
+    printf("Balance: £%.2f\n", (double)(r->balance)/100);
+    printf("\nPlease enter the amount you wish to withdraw (£): ");
+    char buf[20];
+    if ( fgets(buf, 20, stdin) == NULL)
+    {
+        perror("fgets");
+        return -1;
+    }
+    double amount = atof(buf);
+    if (amount <= 0)
+    {
+        printf("invalid amount.\n");
+        return -1;
+    }
+    if (amount > r->balance)
+    {
+        printf("too much.\n");
+        return -1;
+    }
+    double balance = (double)r->balance;
+    double nBp = balance/100 - amount;
+    int nB = (int)(nBp*100);   
+    r->balance = nB;
+    printf("New Balance: £%.2f", (double)(r->balance)/100);
+    while (getchar() != '\n') ;
+    printf("not implemented.\n");
+    return -1;
 }
