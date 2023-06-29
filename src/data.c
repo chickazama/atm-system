@@ -168,7 +168,7 @@ int create_record(struct user* u, struct record* r)
 \"%d\", \
 \"%d\", \
 \"%s\", \
-\"%s\", \
+\"%d\", \
 \"%d\", \
 \"%s\");", u->id, u->username, r->accountNumber, r->creationDate, r->country, r->phoneNumber, r->balance, r->type);
     int rc = sqlite3_prepare_v2(records_db, sql, -1, &stmt, 0);
