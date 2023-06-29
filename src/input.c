@@ -55,6 +55,12 @@ int input_user(struct user* u)
 	    // perror("fgets");
 	    return -1;
     }
+    if (buf[strlen(buf)-1] != '\n')
+    {
+        while (getchar() != '\n') ;
+        printf("\nUsername has a maximum of 18 characters in length.\n");
+        return -1; 
+    }
     buf[strlen(buf)-1] = '\0';
     strncpy(u->username, buf, strlen(buf));
     for (int i = 0; i < strlen(buf); i++)
@@ -66,6 +72,13 @@ int input_user(struct user* u)
     {
 	    // perror("fgets");
 	    return -1;
+    }
+    if (buf[strlen(buf)-1] != '\n')
+    {
+        while (getchar() != '\n') ;
+        printf("\nPassword has a maximum of 18 characters in length.\n");
+        return -1; 
+
     }
     buf[strlen(buf)-1] = '\0';
     strncpy(u->password, buf, strlen(buf));
