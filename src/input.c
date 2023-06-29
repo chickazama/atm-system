@@ -47,6 +47,8 @@ int input_menu_selection(int option_count)
 // Returns -1 upon an fgets error (prints out error message).
 int input_user(struct user* u)
 {
+    printf("\nPlease note: Username and Password must contain between 5-18 characters.");
+    printf("\nValid characters: a-z, A-Z, _ (underscore)\n");
     // Define buffer, prompt user for input
     char buf[BUF_LEN];
     printf("\nUsername: ");
