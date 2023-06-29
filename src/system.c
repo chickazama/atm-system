@@ -98,7 +98,7 @@ int register_user(struct user* u)
     }
 
     // Validate username and password here
-    
+    create_user(u);
     return PROFILE_MENU;
 }
 
