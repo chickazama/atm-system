@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
     switch (opt)
     {
         case 0:
-            printf("\nThank you for using ATM. Goodbye.\n");
+            printf("\nThank you for using the 01Founders ATM. Goodbye.\n");
         default:
             exit(EXIT_FAILURE);
     }
