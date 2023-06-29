@@ -106,6 +106,9 @@ int register_user(struct user* u)
         return MAIN_MENU;
     }
     create_user(u);
+    get_user(u);
+    // printf("ID: %d\tName: %s\tPassword: %s\n", u->id, u->username, u->password);
+    // while (getchar() != '\n') ;
     return PROFILE_MENU;
 }
 
