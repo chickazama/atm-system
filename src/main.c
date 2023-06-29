@@ -58,8 +58,8 @@ int run(int opt)
             return profile_menu(&u);
         // case VIEW_ACCOUNTS_MENU:
         //     return run_view_accounts_menu(&u);
-        // case OPEN_NEW_ACCOUNT_MENU:
-        //     return run_create_account_menu(&u, &r);
+        case OPEN_NEW_ACCOUNT_MENU:
+            return create_account(&u, &r);
         default:
             printf("not implemented.\n");
             break;
