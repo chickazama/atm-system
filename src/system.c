@@ -3,6 +3,7 @@
 #include <string.h>
 #include "atm.h"
 #include "auth.h"
+#include "data.h"
 #include "input.h"
 #include "system.h"
 
@@ -83,13 +84,15 @@ int register_user(struct user* u)
     if ( input_user(u) == -1 )
     {
         printf("\nSorry, there was a problem with the registration. Press enter to return to main menu. ");
+        logout_user(u);
         while (getchar() != '\n') ;
         return MAIN_MENU;
     }
 
-    if ( user_exists(u) )
+    if ( get_user(u) )
     {
         printf("\nA user with the name '%s' already exists. Press enter to return to main menu. ", u->username);
+        logout_user(u);
         while (getchar() != '\n') ;
         return MAIN_MENU;
     }
@@ -111,16 +114,24 @@ int login_user(struct user* u)
         while (getchar() != '\n') ;
         return MAIN_MENU;
     }
+    struct user comp;
+    printf("%ld\n", strlen(u->username));
+    memset(comp.username, 0, 20);
+    memset(comp.password, 0, 20);
+    strncpy(comp.username, u->username, strlen(u->username));
+    // strncpy(comp.password, u->password, strlen(u->password));
     // Try to get user from file
-    if (!user_exists(u))
+    if (get_user(&comp) != 1)
     {
+        // printf("Username (actual): %s\n", u->username);
+        // printf("Username (expected): %s\n", comp.username);
         printf("\nThe user '%s' does not exist. Please check spelling, or register a new account.\n", u->username);
         printf("Press enter to return to main menu. ");
         while (getchar() != '\n') ;
         return MAIN_MENU;
     }
     // Check Correct Password
-    if ( !check_password(u) )
+    if ( !check_password(u, &comp) )
     {
         printf("\nIncorrect password. Press enter to return to main menu. ");
         while (getchar() != '\n') ;
