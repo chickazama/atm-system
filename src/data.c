@@ -171,6 +171,20 @@ int create_record(struct user* u, struct record* r)
 \"%s\", \
 \"%d\", \
 \"%s\");", u->id, u->username, r->accountNumber, r->creationDate, r->country, r->phoneNumber, r->balance, r->type);
+    int rc = sqlite3_prepare_v2(records_db, sql, -1, &stmt, 0);
+    if (rc != SQLITE_OK)
+    {
+        printf("problem preparing insert: %d\n", rc);
+        return rc;
+    }
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE)
+    {
+        printf("problem executing insert: %d\n", rc);
+        return rc;
+    }
+    sqlite3_finalize(stmt);
+    return rc;
 }
 
 int callback(void *NotUsed, int argc, char **argv, char **azColName) {
