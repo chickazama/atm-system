@@ -115,16 +115,12 @@ int login_user(struct user* u)
         return MAIN_MENU;
     }
     struct user comp;
-    printf("%ld\n", strlen(u->username));
     memset(comp.username, 0, 20);
     memset(comp.password, 0, 20);
     strncpy(comp.username, u->username, strlen(u->username));
-    // strncpy(comp.password, u->password, strlen(u->password));
     // Try to get user from file
     if (get_user(&comp) != 1)
     {
-        // printf("Username (actual): %s\n", u->username);
-        // printf("Username (expected): %s\n", comp.username);
         printf("\nThe user '%s' does not exist. Please check spelling, or register a new account.\n", u->username);
         printf("Press enter to return to main menu. ");
         while (getchar() != '\n') ;
