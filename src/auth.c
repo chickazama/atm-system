@@ -21,7 +21,7 @@ int validate_chars(char* str)
     }
     for (int i = 0; i < strlen(str); i++)
     {
-        if ( !( (str[i] >= 30 && str[i] <= 39) || (str[i] >= 65 && str[i] <= 90) || (str[i] >= 97 && str[i] <= 122) || str[i] == 95 ) ) 
+        if ( !( (str[i] >= 48 && str[i] <= 57) || (str[i] >= 65 && str[i] <= 90) || (str[i] >= 97 && str[i] <= 122) || str[i] == 95 ) ) 
             return -1;
     }
     return 0;
