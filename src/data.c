@@ -36,6 +36,27 @@ int create_users_table(void)
     return rc;
 }
 
+int drop_users_table(void)
+{
+    sqlite3_stmt* stmt;
+    char* err_msg;
+    char* sql = "DROP TABLE \"users\";";
+    int rc = sqlite3_prepare_v2(identity_db, sql, -1, &stmt, 0);
+    if (rc != SQLITE_OK)
+    {
+        printf("problem preparing drop: %d\n", rc);
+        return rc;
+    }
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE)
+    {
+        printf("problem executing delete: %d\n", rc);
+        return rc;
+    }
+    sqlite3_finalize(stmt);
+    return rc;
+}
+
 int create_records_table(void)
 {
     sqlite3_open("data/Records.db", &records_db);;
@@ -107,6 +128,28 @@ int create_user(struct user* u)
     if (rc != SQLITE_DONE)
     {
         printf("problem executing insert: %d\n", rc);
+        return rc;
+    }
+    sqlite3_finalize(stmt);
+    return rc;
+}
+
+int delete_user(struct user* u)
+{
+    sqlite3_stmt* stmt;
+    char* err_msg;
+    char sql[255];
+    sprintf(sql, "DELETE FROM \"users\" WHERE \"username\" = \"%s\";", u->username);
+    int rc = sqlite3_prepare_v2(identity_db, sql, -1, &stmt, 0);
+    if (rc != SQLITE_OK)
+    {
+        printf("problem preparing delete: %d\n", rc);
+        return rc;
+    }
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE)
+    {
+        printf("problem executing delete: %d\n", rc);
         return rc;
     }
     sqlite3_finalize(stmt);

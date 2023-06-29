@@ -21,6 +21,8 @@ int main(int argc, char* argv[])
 {
     create_users_table();
     create_records_table();
+    // drop_users_table();
+    // while (getchar() != '\n') ;
     int opt = MAIN_MENU;
 
     do
