@@ -5,5 +5,6 @@
 #include "include/sqlite3.h"
 
 int create_users_table(void);
+int create_records_table(void);
 
 #endif

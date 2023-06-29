@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "atm.h"
+#include "data.h"
 #include "system.h"
 
 #define MAIN_MENU 1
@@ -18,6 +19,9 @@ struct record r;
 
 int main(int argc, char* argv[])
 {
+    create_users_table();
+    create_records_table();
+    
     int opt = MAIN_MENU;
 
     do
