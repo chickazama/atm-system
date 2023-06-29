@@ -4,7 +4,7 @@
 // Represents a user object.
 // Contains properties corresponding to a unique ID, username, and password.
 struct user {
-	__INT16_C id;
+	int id;
 	char username[20];
 	char password[20];
 };
