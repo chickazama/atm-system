@@ -166,7 +166,7 @@ int input_create_account(struct user* u, struct record* r)
     {
         return -1;
     }
-    r->balance = balance;
+    r->balance = (int)(balance*100);
     // clear buffer
     memset(buf, 0, strlen(buf));
     printf("\nAccount Type (current, fixed01, fixed02, fixed03): ");
@@ -177,7 +177,7 @@ int input_create_account(struct user* u, struct record* r)
         return -1;
     }
     buf[strlen(buf)-1] = '\0';
-    if ( !(buf == "current" || buf == "fixed01" || buf == "fixed02" || buf == "fixed03") )
+    if ( ! (strcmp(buf, "current") == 0 || strcmp(buf, "fixed01") == 0 || strcmp(buf, "fixed02") == 0 || strcmp(buf, "fixed03") == 0) )
     {
         printf("'%s' is not a valid account type.\n", buf);
         return -1;
