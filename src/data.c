@@ -117,7 +117,7 @@ int create_user(struct user* u)
     sqlite3_stmt* stmt;
     char* err_msg;
     char sql[255];
-    sprintf(sql, "INSERT INTO users VALUES(?, \"%s\", \"%s\");", u->username, u->password);
+    sprintf(sql, "INSERT INTO \"users\" VALUES(?, \"%s\", \"%s\");", u->username, u->password);
     int rc = sqlite3_prepare_v2(identity_db, sql, -1, &stmt, 0);
     if (rc != SQLITE_OK)
     {
@@ -154,6 +154,23 @@ int delete_user(struct user* u)
     }
     sqlite3_finalize(stmt);
     return rc;
+}
+
+int create_record(struct user* u, struct record* r)
+{
+    sqlite3_stmt* stmt;
+    char* err_msg;
+    char sql[255];
+    sprintf(sql, "INSERT INTO \"records\" VALUES (\
+?, \
+\"%d\", \
+\"%s\", \
+\"%d\", \
+\"%d\", \
+\"%s\", \
+\"%s\", \
+\"%d\", \
+\"%s\");", u->id, u->username, r->accountNumber, r->creationDate, r->country, r->phoneNumber, r->balance, r->type);
 }
 
 int callback(void *NotUsed, int argc, char **argv, char **azColName) {
