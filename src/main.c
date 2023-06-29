@@ -21,7 +21,6 @@ int main(int argc, char* argv[])
 {
     create_users_table();
     create_records_table();
-    
     int opt = MAIN_MENU;
 
     do
@@ -45,6 +44,9 @@ int run(int opt)
     switch (opt)
     {
         case MAIN_MENU:
+            u.id = 0;
+            memset(u.username, 0, 20);
+            memset(u.password, 0, 20);
             return main_menu();
         case REGISTER_MENU:
             return register_user(&u);
