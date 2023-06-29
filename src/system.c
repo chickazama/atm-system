@@ -143,7 +143,7 @@ int login_user(struct user* u)
         while (getchar() != '\n') ;
         return MAIN_MENU;
     }
-
+    u->id = comp.id;
     return PROFILE_MENU;
 }
 
@@ -160,5 +160,6 @@ int create_account(struct user* u, struct record* r)
     if ( input_create_account(u, r) == -1 )
         return -1;
     // Write account to file
+    create_record(u, r);
     return 0;
 }

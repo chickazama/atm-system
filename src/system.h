@@ -25,7 +25,6 @@ int register_user(struct user*);
 int login_user(struct user*);
 void logout_user(struct user*);
 
-
 // Data access wrappers
 int create_account(struct user*, struct record*);
 
