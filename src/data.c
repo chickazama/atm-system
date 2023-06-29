@@ -91,6 +91,28 @@ int get_user(struct user* u)
     return user_set;
 }
 
+int create_user(struct user* u)
+{
+    sqlite3_stmt* stmt;
+    char* err_msg;
+    char sql[255];
+    sprintf(sql, "INSERT INTO users VALUES(?, \"%s\", \"%s\");", u->username, u->password);
+    int rc = sqlite3_prepare_v2(identity_db, sql, -1, &stmt, 0);
+    if (rc != SQLITE_OK)
+    {
+        printf("problem preparing insert: %d\n", rc);
+        return rc;
+    }
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE)
+    {
+        printf("problem executing insert: %d\n", rc);
+        return rc;
+    }
+    sqlite3_finalize(stmt);
+    return rc;
+}
+
 int callback(void *NotUsed, int argc, char **argv, char **azColName) {
     
     NotUsed = 0;

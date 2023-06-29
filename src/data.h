@@ -8,5 +8,6 @@ int create_users_table(void);
 int create_records_table(void);
 int get_all_users(void);
 int get_user(struct user*);
+int create_user(struct user*);
 
 #endif
