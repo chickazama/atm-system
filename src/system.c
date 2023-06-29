@@ -92,6 +92,19 @@ int view_accounts_menu(struct user* u)
         while (getchar() != '\n');
         return PROFILE_MENU;
     }
+    struct record r;
+    r.accountNumber = acct_no;
+    if (get_record(&r) != 0)
+    {
+        printf("Problem retrieving account");
+        return -1;
+    }
+    if (r.ownerId != u->id)
+    {
+        printf("Not authorized.\n");
+        return -1;
+    }
+    printf("Balance (p): %d\n", r.balance);
     printf("not implemented.\n");
     return -1;
 }
