@@ -158,8 +158,19 @@ void logout_user(struct user* u)
 int create_account(struct user* u, struct record* r)
 {
     if ( input_create_account(u, r) == -1 )
-        return -1;
+    {
+        printf("Input problem. Press enter to return to your profile. ");
+        while (getchar() != '\n') ;
+        return PROFILE_MENU;
+    }
     // Write account to file
-    create_record(u, r);
-    return 0;
+    if (create_record(u, r) != 0)
+    {
+        printf("Problem creating account. Press enter to return to your profile. ");
+        while (getchar() != '\n') ;
+        return PROFILE_MENU;
+    }
+    printf("Account created successfully. Press enter to return to your profile. ");
+    while (getchar() != '\n') ;
+    return PROFILE_MENU;
 }
