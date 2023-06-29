@@ -10,16 +10,18 @@
 #define PROFILE_MENU 4
 #define VIEW_ACCOUNTS_MENU 5
 #define OPEN_NEW_ACCOUNT_MENU 6
+#define ACCOUNT_MENU 7
 
 // Menu Option Counts
 #define MAIN_MENU_OPTS 3
 #define PROFILE_MENU_OPTS 3
+#define ACCOUNT_MENU_OPTS 5
 
 // Menu functions
 int main_menu(void);
 int profile_menu(struct user*);
-int view_accounts_menu(struct user*);
-
+int view_accounts_menu(struct user*, struct record*);
+int account_menu(struct user*, struct record*);
 // User registration/login/logout
 int register_user(struct user*);
 int login_user(struct user*);

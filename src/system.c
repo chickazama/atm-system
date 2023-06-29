@@ -66,7 +66,7 @@ int profile_menu(struct user* u)
     return -1;
 }
 
-int view_accounts_menu(struct user* u)
+int view_accounts_menu(struct user* u, struct record* r)
 {
     system("clear");
     printf("%s\n", TITLE);
@@ -92,20 +92,49 @@ int view_accounts_menu(struct user* u)
         while (getchar() != '\n');
         return PROFILE_MENU;
     }
-    struct record r;
-    r.accountNumber = acct_no;
-    if (get_record(&r) != 0)
+    r->accountNumber = acct_no;
+    if (get_record(r) != 0)
     {
         printf("Problem retrieving account");
         return -1;
     }
-    if (r.ownerId != u->id)
+    if (r->ownerId != u->id)
     {
         printf("Not authorized.\n");
         return -1;
     }
-    printf("Balance (p): %d\n", r.balance);
-    printf("not implemented.\n");
+    return ACCOUNT_MENU;
+}
+
+int account_menu(struct user* u, struct record* r)
+{
+    int ret;
+    do {
+        system("clear");
+        printf("%s\n", TITLE);
+        printf("\n=== '%s' - Account #%d ===\n", u->username, r->accountNumber);
+        printf("Balance: %d\n", r->balance);
+        printf("Country: %s\n", r->country);
+        printf("\n[1] - Withdraw\n");
+        printf("\n[2] - Deposit\n");
+        printf("\n[3] - Transfer Ownership\n");
+        printf("\n[4] - Close Account\n");
+        printf("\n[5] - Return To Profile\n");
+        ret = input_menu_selection(ACCOUNT_MENU_OPTS);
+    } while (ret <= 0) ;
+
+    switch (ret)
+    {
+        // case 1:
+        //     return VIEW_ACCOUNTS_MENU;
+        // case 2:
+        //     return OPEN_NEW_ACCOUNT_MENU;
+        case 5:
+            return PROFILE_MENU;
+        default:
+            printf("Account menu option not implemented\n");
+            break;
+    }
     return -1;
 }
 
