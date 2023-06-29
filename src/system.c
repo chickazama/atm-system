@@ -98,6 +98,13 @@ int register_user(struct user* u)
     }
 
     // Validate username and password here
+    if (validate_user(u) != 0)
+    {
+        printf("\nInvalid username or password. Press enter to return to main menu. ");
+        logout_user(u);
+        while (getchar() != '\n') ;
+        return MAIN_MENU;
+    }
     create_user(u);
     return PROFILE_MENU;
 }
@@ -127,7 +134,7 @@ int login_user(struct user* u)
         return MAIN_MENU;
     }
     // Check Correct Password
-    if ( !check_password(u, &comp) )
+    if ( strcmp(u->password, comp.password) != 0 )
     {
         printf("\nIncorrect password. Press enter to return to main menu. ");
         while (getchar() != '\n') ;
