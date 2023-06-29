@@ -12,7 +12,7 @@ struct user {
 struct record {
 	int id;
 	char owner[20];
-	//date
+	int creationDate;
 	int accountNumber;
 	char country[20];
 	int phoneNumber;
