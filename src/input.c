@@ -65,10 +65,7 @@ int input_user(struct user* u)
     }
     buf[strlen(buf)-1] = '\0';
     strncpy(u->username, buf, strlen(buf));
-    for (int i = 0; i < strlen(buf); i++)
-    {
-        buf[i] = '\0';
-    }
+    memset(buf, 0, strlen(buf));
     printf("\nPassword: ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL )
     {
