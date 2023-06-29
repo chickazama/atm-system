@@ -56,8 +56,8 @@ int run(int opt)
             return login_user(&u);
         case PROFILE_MENU:
             return profile_menu(&u);
-        // case VIEW_ACCOUNTS_MENU:
-        //     return run_view_accounts_menu(&u);
+        case VIEW_ACCOUNTS_MENU:
+            return view_accounts_menu(&u);
         case OPEN_NEW_ACCOUNT_MENU:
             return create_account(&u, &r);
         default:

@@ -68,9 +68,17 @@ int profile_menu(struct user* u)
 
 int view_accounts_menu(struct user* u)
 {
-    // system("clear");
-    // print_view_accounts_menu(u);
-    // return input_menu_selection(PROFILE_MENU_OPTS);
+    system("clear");
+    printf("%s\n", TITLE);
+    printf("\n=== Accounts - '%s' ===\n", u->username);
+    if (get_user_records(u) != 0)
+    {
+        printf("error with getting records. Press enter to return to profile. ");
+        while (getchar() != '\n') ;
+        return PROFILE_MENU;
+    }
+    
+    while (getchar() != '\n') ;
     return -1;
 }
 
