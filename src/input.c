@@ -111,6 +111,21 @@ int input_create_account(struct user* u, struct record* r)
     r->accountNumber = accountNumber;
     // clear buffer
     memset(buf, 0, strlen(buf));
+    printf("\nCreation Date: ");
+    if ( fgets(buf, BUF_LEN, stdin) == NULL )
+    {
+        // Print out error message
+        perror("fgets");
+        return -1;
+    }
+    buf[strlen(buf)-1] = '\0';
+    int creationDate = atoi(buf);
+    if (creationDate <= 0)
+    {
+        return -1;
+    }
+    r->creationDate = creationDate;
+    memset(buf, 0, strlen(buf));
     printf("\nCountry: ");
     if ( fgets(buf, BUF_LEN, stdin) == NULL )
     {
@@ -152,5 +167,21 @@ int input_create_account(struct user* u, struct record* r)
         return -1;
     }
     r->balance = balance;
+    // clear buffer
+    memset(buf, 0, strlen(buf));
+    printf("\nAccount Type (current, fixed01, fixed02, fixed03): ");
+    if ( fgets(buf, BUF_LEN, stdin) == NULL )
+    {
+        // Print out error message
+        perror("fgets");
+        return -1;
+    }
+    buf[strlen(buf)-1] = '\0';
+    if ( !(buf == "current" || buf == "fixed01" || buf == "fixed02" || buf == "fixed03") )
+    {
+        printf("'%s' is not a valid account type.\n", buf);
+        return -1;
+    }
+    strncpy(r->type, buf, strlen(buf));
     return 0;
 }
