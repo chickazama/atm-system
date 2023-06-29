@@ -13,5 +13,6 @@ int create_user(struct user*);
 int delete_user(struct user*);
 int create_record(struct user*, struct record*);
 int get_user_records(struct user*);
+int get_record(struct record*);
 
 #endif
