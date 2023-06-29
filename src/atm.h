@@ -16,7 +16,7 @@ struct record {
 	int accountNumber;
 	char country[20];
 	int phoneNumber;
-	double balance;
+	int balance;
 	char type[20];
 };
 
