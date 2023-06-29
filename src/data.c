@@ -196,6 +196,52 @@ int create_record(struct user* u, struct record* r)
     return rc;
 }
 
+int get_user_records(struct user* u)
+{
+    // int i = 0;
+    sqlite3_stmt* stmt;
+    char* err_msg;
+    char sql[255];
+    sprintf(sql, "SELECT * FROM \"records\" WHERE \"ownerId\" = \"%d\";", u->id);
+    int rc = sqlite3_prepare_v2(records_db, sql, -1, &stmt, 0);
+    if (rc != SQLITE_OK)
+    {
+        printf("error preparing stmt\n");
+        return -1;
+    }
+    int step = sqlite3_step(stmt);
+    int user_set = 0;
+    while (step == SQLITE_ROW)
+    {
+        int acct_no = sqlite3_column_int(stmt, 3);
+        const char* type = sqlite3_column_text(stmt, 8);
+        printf("\nAccount: %d\tType: %s\n", acct_no, type);
+        // struct record* r = records[i];
+        // r->id = sqlite3_column_int(stmt, 0);
+        // r->ownerId = sqlite3_column_int(stmt, 1);
+        // strcpy(r->owner, sqlite3_column_text(stmt, 2));
+        // r->accountNumber = sqlite3_column_int(stmt, 3);
+        // r->creationDate = sqlite3_column_int(stmt, 4);
+        // strcpy(r->country, sqlite3_column_text(stmt, 5));
+        // r->phoneNumber = sqlite3_column_int(stmt, 6);
+        // r->balance = sqlite3_column_int(stmt, 7);
+        // strcpy(r->type, sqlite3_column_text(stmt, 8));
+        // i++;
+        step = sqlite3_step(stmt);
+    }
+    if (step != SQLITE_DONE)
+    {
+        printf("error stepping through rows\n");
+        return -1;
+    }
+    rc = sqlite3_finalize(stmt);
+    if (rc != SQLITE_OK) {
+        printf("error finalising\n");
+        return -1;
+    }
+    return rc;
+}
+
 int callback(void *NotUsed, int argc, char **argv, char **azColName) {
     
     NotUsed = 0;
