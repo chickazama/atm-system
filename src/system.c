@@ -77,8 +77,22 @@ int view_accounts_menu(struct user* u)
         while (getchar() != '\n') ;
         return PROFILE_MENU;
     }
-    
-    while (getchar() != '\n') ;
+    printf("\nPlease enter the number of the account you wish to view: ");
+    char buf[20];
+    if (fgets(buf, 20, stdin) == NULL)
+    {
+        perror("fgets");
+        return -1;
+    }
+    buf[strlen(buf)-1] = '\0';
+    int acct_no = atoi(buf);
+    if (acct_no <= 0)
+    {
+        printf("Invalid account number. Press enter to return to profile. ");
+        while (getchar() != '\n');
+        return PROFILE_MENU;
+    }
+    printf("not implemented.\n");
     return -1;
 }
 
