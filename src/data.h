@@ -16,5 +16,6 @@ int get_user_records(struct user*);
 int get_record(struct record*);
 int update_balance(struct record*);
 int update_owner(struct user*, struct record*);
+int delete_account(struct record*);
 
 #endif
