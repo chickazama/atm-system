@@ -15,5 +15,6 @@ int create_record(struct user*, struct record*);
 int get_user_records(struct user*);
 int get_record(struct record*);
 int update_balance(struct record*);
+int update_owner(struct user*, struct record*);
 
 #endif

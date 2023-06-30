@@ -305,6 +305,31 @@ int update_balance(struct record* r) {
     return rc;
 }
 
+int update_owner(struct user* u, struct record* r)
+{
+    sqlite3_stmt* stmt;
+    char* err_msg;
+    char sql[255];
+    sprintf(sql, "UPDATE \"records\" SET \"ownerId\" = \"%d\", \"username\" = \"%s\" WHERE \"accountNumber\" = \"%d\";", u->id, u->username, r->accountNumber);
+    int rc = sqlite3_prepare_v2(records_db, sql, -1, &stmt, 0);
+    if (rc != SQLITE_OK)
+    {
+        printf("problem preparing update: %d\n", rc);
+        return rc;
+    }
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE)
+    {
+        printf("problem executing update: %d\n", rc);
+        return rc;
+    }
+    rc = sqlite3_finalize(stmt);
+    if (rc != SQLITE_OK) {
+        printf("problem finalising stmt: %d\n", rc);
+    }
+    return rc;
+}
+
 int callback(void *NotUsed, int argc, char **argv, char **azColName) {
     
     NotUsed = 0;
