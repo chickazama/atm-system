@@ -130,6 +130,8 @@ int account_menu(struct user* u, struct record* r)
             return WITHDRAW;
         case 2:
             return DEPOSIT;
+        case 3:
+            return TRANSFER_OWNERSHIP;
         case 5:
             return VIEW_ACCOUNTS_MENU;
         case 6:
@@ -351,4 +353,55 @@ int deposit(struct user* u, struct record* r)
             break;
     }
     return -1;
+}
+
+int transfer_ownership(struct user* u, struct record* r)
+{
+    system("clear");
+    printf("%s\n", TITLE);
+    printf("\n=== %s ===\n", u->username);
+    printf("\n=== Account #%d ===\n", r->accountNumber);
+    printf("Balance: £%.2f\n", (double)(r->balance)/100);
+    printf("\nPlease enter the name of the user to whom you wish to transfer ownership of this account: ");
+    char buf[20];
+    if ( fgets(buf, 20, stdin) == NULL)
+    {
+        perror("fgets");
+        return -1;
+    }
+    buf[strlen(buf)-1] = '\0';
+    struct user rec;
+    rec.id = 0;
+    memset(rec.username, 0, 20);
+    memset(rec.password, 0, 20);
+    strncpy(rec.username, buf, strlen(buf));
+    if (!get_user(&rec))
+    {
+        printf("The user '%s' does not exist. Press enter to go back. ", buf);
+        while (getchar() != '\n') ;
+        return ACCOUNT_MENU;
+    }
+    memset(buf, 0, 20);
+    printf("\nAre you sure you wish to transfer ownership of this account? (y/n): ");
+    if ( fgets(buf, 20, stdin) == NULL)
+    {
+        perror("fgets");
+        return -1;
+    }
+    buf[strlen(buf)-1] = '\0';
+    if (strcmp(buf, "y") != 0)
+    {
+        printf("Transfer cancelled. Press enter to return to Account #%d. ", r->accountNumber);
+        while (getchar() != '\n') ;
+        return ACCOUNT_MENU;
+    }
+    if (update_owner(&rec, r) != 0)
+    {
+        printf("error transferring ownership\n");
+        return -1;
+    }
+    printf("\nOwnership of Account #%d transferred from '%s' to '%s.\n", r->accountNumber, u->username, rec.username);
+    printf("\nPress enter to return to your profile. ");
+    while (getchar() != '\n') ;
+    return PROFILE_MENU;
 }

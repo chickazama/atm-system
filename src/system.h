@@ -13,6 +13,7 @@
 #define ACCOUNT_MENU 7
 #define WITHDRAW 8
 #define DEPOSIT 9
+#define TRANSFER_OWNERSHIP 10
 
 // Menu Option Counts
 #define MAIN_MENU_OPTS 3
@@ -34,5 +35,5 @@ void logout_user(struct user*);
 int create_account(struct user*, struct record*);
 int withdraw(struct user*, struct record*);
 int deposit(struct user*, struct record*);
-
+int transfer_ownership(struct user*, struct record*);
 #endif
