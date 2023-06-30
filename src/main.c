@@ -14,6 +14,7 @@
 #define ACCOUNT_MENU 7
 #define WITHDRAW 8
 #define DEPOSIT 9
+#define TRANSFER_OWNERSHIP 10
 
 int run(int);
 void reset_user(struct user*);
@@ -74,6 +75,8 @@ int run(int opt)
             return withdraw(&u, &r);
         case DEPOSIT:
             return deposit(&u, &r);
+        case TRANSFER_OWNERSHIP:
+            return transfer_ownership(&u, &r);
         default:
             printf("not implemented.\n");
             break;
