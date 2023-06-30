@@ -16,7 +16,8 @@
 // Menu Option Counts
 #define MAIN_MENU_OPTS 3
 #define PROFILE_MENU_OPTS 3
-#define ACCOUNT_MENU_OPTS 5
+#define ACCOUNT_MENU_OPTS 6
+#define WITHDRAW_COMPLETE_OPTS 3
 
 // Menu functions
 int main_menu(void);

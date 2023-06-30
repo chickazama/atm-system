@@ -112,7 +112,6 @@ int account_menu(struct user* u, struct record* r)
     do {
         system("clear");
         printf("%s\n", TITLE);
-        printf("\n=== %s ===\n", u->username);
         printf("\n=== Account #%d ===\n", r->accountNumber);
         printf("Balance: £%.2f\n", (double)(r->balance)/100);
         printf("Country: %s\n", r->country);
@@ -120,7 +119,8 @@ int account_menu(struct user* u, struct record* r)
         printf("\n[2] - Deposit\n");
         printf("\n[3] - Transfer Ownership\n");
         printf("\n[4] - Close Account\n");
-        printf("\n[5] - Return To Profile\n");
+        printf("\n[5] - Return to 'View Accounts'\n");
+        printf("\n[6] - Return To Profile\n");
         ret = input_menu_selection(ACCOUNT_MENU_OPTS);
     } while (ret <= 0) ;
 
@@ -131,6 +131,8 @@ int account_menu(struct user* u, struct record* r)
         // case 2:
         //     return OPEN_NEW_ACCOUNT_MENU;
         case 5:
+            return VIEW_ACCOUNTS_MENU;
+        case 6:
             return PROFILE_MENU;
         default:
             printf("Account menu option not implemented\n");
@@ -269,8 +271,31 @@ int withdraw(struct user* u, struct record* r)
     double nBp = balance/100 - amount;
     int nB = (int)(nBp*100);   
     r->balance = nB;
-    printf("New Balance: £%.2f", (double)(r->balance)/100);
-    while (getchar() != '\n') ;
-    printf("not implemented.\n");
+    if (update_balance(r) != 0)
+    {
+        printf("problem updating balance\n");
+        return -1;
+    }
+    int ret;
+    do {
+        system("clear");
+        printf("\nYou have withdrawn £%.2f from Account #%d.\nAccount Balance: £%.2f\n", amount, r->accountNumber, (double)(r->balance)/100);
+        printf("\n[1] - Return to Account #%d Menu\n", r->accountNumber);
+        printf("\n[2] - Return to 'View Accounts'\n");
+        printf("\n[3] - Return to your profile\n");
+        ret = input_menu_selection(WITHDRAW_COMPLETE_OPTS);
+    } while (ret <= 0);
+    switch (ret)
+    {
+        case 1:
+            return ACCOUNT_MENU;
+        case 2:
+            return VIEW_ACCOUNTS_MENU;
+        case 3:
+            return PROFILE_MENU;
+        default:
+            printf("Invalid\n");
+            break;
+    }
     return -1;
 }
