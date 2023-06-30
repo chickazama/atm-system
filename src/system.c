@@ -128,8 +128,8 @@ int account_menu(struct user* u, struct record* r)
     {
         case 1:
             return WITHDRAW;
-        // case 2:
-        //     return OPEN_NEW_ACCOUNT_MENU;
+        case 2:
+            return DEPOSIT;
         case 5:
             return VIEW_ACCOUNTS_MENU;
         case 6:
@@ -280,6 +280,59 @@ int withdraw(struct user* u, struct record* r)
     do {
         system("clear");
         printf("\nYou have withdrawn £%.2f from Account #%d.\nAccount Balance: £%.2f\n", amount, r->accountNumber, (double)(r->balance)/100);
+        printf("\n[1] - Return to Account #%d Menu\n", r->accountNumber);
+        printf("\n[2] - Return to 'View Accounts'\n");
+        printf("\n[3] - Return to your profile\n");
+        ret = input_menu_selection(WITHDRAW_COMPLETE_OPTS);
+    } while (ret <= 0);
+    switch (ret)
+    {
+        case 1:
+            return ACCOUNT_MENU;
+        case 2:
+            return VIEW_ACCOUNTS_MENU;
+        case 3:
+            return PROFILE_MENU;
+        default:
+            printf("Invalid\n");
+            break;
+    }
+    return -1;
+}
+
+int deposit(struct user* u, struct record* r)
+{
+    system("clear");
+    printf("%s\n", TITLE);
+    printf("\n=== %s ===\n", u->username);
+    printf("\n=== Account #%d ===\n", r->accountNumber);
+    printf("Balance: £%.2f\n", (double)(r->balance)/100);
+    printf("\nPlease enter the amount you wish to deposit (£): ");
+    char buf[20];
+    if ( fgets(buf, 20, stdin) == NULL)
+    {
+        perror("fgets");
+        return -1;
+    }
+    double amount = atof(buf);
+    if (amount <= 0)
+    {
+        printf("invalid amount.\n");
+        return -1;
+    }
+    double balance = (double)r->balance;
+    double nBp = balance/100 + amount;
+    int nB = (int)(nBp*100);
+    r->balance = nB;
+    if (update_balance(r) != 0)
+    {
+        printf("problem updating balance\n");
+        return -1;
+    }
+    int ret;
+    do {
+        system("clear");
+        printf("\nYou have deposited £%.2f into Account #%d.\nAccount Balance: £%.2f\n", amount, r->accountNumber, (double)(r->balance)/100);
         printf("\n[1] - Return to Account #%d Menu\n", r->accountNumber);
         printf("\n[2] - Return to 'View Accounts'\n");
         printf("\n[3] - Return to your profile\n");
