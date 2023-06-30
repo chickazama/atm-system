@@ -132,6 +132,8 @@ int account_menu(struct user* u, struct record* r)
             return DEPOSIT;
         case 3:
             return TRANSFER_OWNERSHIP;
+        case 4:
+            return CLOSE_ACCOUNT;
         case 5:
             return VIEW_ACCOUNTS_MENU;
         case 6:
@@ -402,6 +404,38 @@ int transfer_ownership(struct user* u, struct record* r)
     }
     printf("\nOwnership of Account #%d transferred from '%s' to '%s.\n", r->accountNumber, u->username, rec.username);
     printf("\nPress enter to return to your profile. ");
+    while (getchar() != '\n') ;
+    return PROFILE_MENU;
+}
+
+int close_account(struct user* u, struct record* r)
+{
+    system("clear");
+    printf("%s\n", TITLE);
+    printf("\n=== %s ===\n", u->username);
+    printf("\n=== Account #%d ===\n", r->accountNumber);
+    printf("Balance: £%.2f\n", (double)(r->balance)/100);
+    printf("\nAre you sure you wish to close this account? (y/n): ");
+    char buf[20];
+    if ( fgets(buf, 20, stdin) == NULL)
+    {
+        perror("fgets");
+        return -1;
+    }
+    buf[strlen(buf)-1] = '\0';
+    if (strcmp(buf, "y") != 0)
+    {
+        printf("\nAccount deletion cancelled. Press enter to return to Account #%d. ", r->accountNumber);
+        while (getchar() != '\n') ;
+        return ACCOUNT_MENU;
+    }
+    if (delete_account(r) != 0)
+    {
+        printf("\nProblem deleting account. Press enter to return to Account #%d. ", r->accountNumber);
+        while (getchar() != '\n') ;
+        return ACCOUNT_MENU;
+    }
+    printf("\nAccount #%d deleted. Press enter to return to your profile. ", r->accountNumber);
     while (getchar() != '\n') ;
     return PROFILE_MENU;
 }
