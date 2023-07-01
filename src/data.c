@@ -24,7 +24,6 @@ const char* CREATE_RECORDS_STMT = "CREATE TABLE IF NOT EXISTS \"records\" (\
 sqlite3* identity_db;
 sqlite3* records_db;
 
-// int callback(void *NotUsed, int argc, char **argv, char **azColName);
 int run_single_stmt(sqlite3*, char*);
 
 int run_single_stmt(sqlite3* db, char* queryStr)
@@ -92,16 +91,6 @@ int create_records_table(void)
     return rc;
 }
 
-// int get_all_users(void)
-// {
-//     char* err_msg;
-//     char* sql = "SELECT * FROM \"users\";";
-//     int rc = sqlite3_exec(identity_db, sql, callback, NULL, &err_msg);
-//     if (rc != SQLITE_OK)
-//         printf("%s\n", err_msg);
-//     return rc;
-// }
-
 int get_user(struct user* u)
 {
     sqlite3_stmt* stmt;
@@ -139,27 +128,11 @@ int get_user(struct user* u)
 
 int create_user(struct user* u)
 {
-    sqlite3_stmt* stmt;
-    char* err_msg;
     char sql[255];
     sprintf(sql, "INSERT INTO \"users\" VALUES(?, \"%s\", \"%s\");", u->username, u->password);
-    int rc = sqlite3_prepare_v2(identity_db, sql, -1, &stmt, 0);
-    if (rc != SQLITE_OK)
-    {
-        printf("problem preparing insert: %d\n", rc);
-        return rc;
-    }
-    rc = sqlite3_step(stmt);
-    if (rc != SQLITE_DONE)
-    {
-        printf("problem executing insert: %d\n", rc);
-        return rc;
-    }
-    rc = sqlite3_finalize(stmt);
-    if (rc != SQLITE_OK) {
-        printf("problem finalising stmt: %d\n", rc);
-    }
-    return rc;
+    if (run_single_stmt(identity_db, sql) != SQLITE_OK)
+        return -1;
+    return 0;
 }
 
 int delete_user(struct user* u)
@@ -171,29 +144,10 @@ int delete_user(struct user* u)
     if (run_single_stmt(identity_db, sql) != SQLITE_OK)
         return -1;
     return 0;
-    // int rc = sqlite3_prepare_v2(identity_db, sql, -1, &stmt, 0);
-    // if (rc != SQLITE_OK)
-    // {
-    //     printf("problem preparing delete: %d\n", rc);
-    //     return rc;
-    // }
-    // rc = sqlite3_step(stmt);
-    // if (rc != SQLITE_DONE)
-    // {
-    //     printf("problem executing delete: %d\n", rc);
-    //     return rc;
-    // }
-    // rc = sqlite3_finalize(stmt);
-    // if (rc != SQLITE_OK) {
-    //     printf("problem finalising stmt: %d\n", rc);
-    // }
-    // return rc;
 }
 
 int create_record(struct user* u, struct record* r)
 {
-    sqlite3_stmt* stmt;
-    char* err_msg;
     char sql[255];
     sprintf(sql, "INSERT INTO \"records\" VALUES (\
 ?, \
@@ -230,17 +184,6 @@ int get_user_records(struct user* u)
         int acct_no = sqlite3_column_int(stmt, 3);
         const char* type = sqlite3_column_text(stmt, 8);
         printf("\nAccount: %d\tType: %s\n", acct_no, type);
-        // struct record* r = records[i];
-        // r->id = sqlite3_column_int(stmt, 0);
-        // r->ownerId = sqlite3_column_int(stmt, 1);
-        // strcpy(r->owner, sqlite3_column_text(stmt, 2));
-        // r->accountNumber = sqlite3_column_int(stmt, 3);
-        // r->creationDate = sqlite3_column_int(stmt, 4);
-        // strcpy(r->country, sqlite3_column_text(stmt, 5));
-        // r->phoneNumber = sqlite3_column_int(stmt, 6);
-        // r->balance = sqlite3_column_int(stmt, 7);
-        // strcpy(r->type, sqlite3_column_text(stmt, 8));
-        // i++;
         step = sqlite3_step(stmt);
     }
     if (step != SQLITE_DONE)
@@ -296,86 +239,27 @@ int get_record(struct record* r)
 }
 
 int update_balance(struct record* r) {
-    sqlite3_stmt* stmt;
-    char* err_msg;
     char sql[255];
     sprintf(sql, "UPDATE \"records\" SET \"balance\" = \"%d\" WHERE \"accountNumber\" = \"%d\";", r->balance, r->accountNumber);
-    int rc = sqlite3_prepare_v2(records_db, sql, -1, &stmt, 0);
-    if (rc != SQLITE_OK)
-    {
-        printf("problem preparing update: %d\n", rc);
-        return rc;
-    }
-    rc = sqlite3_step(stmt);
-    if (rc != SQLITE_DONE)
-    {
-        printf("problem executing update: %d\n", rc);
-        return rc;
-    }
-    rc = sqlite3_finalize(stmt);
-    if (rc != SQLITE_OK) {
-        printf("problem finalising stmt: %d\n", rc);
-    }
-    return rc;
+    if (run_single_stmt(records_db, sql) != SQLITE_OK)
+        return -1;
+    return 0;
 }
 
 int update_owner(struct user* u, struct record* r)
 {
-    sqlite3_stmt* stmt;
-    char* err_msg;
     char sql[255];
     sprintf(sql, "UPDATE \"records\" SET \"ownerId\" = \"%d\", \"username\" = \"%s\" WHERE \"accountNumber\" = \"%d\";", u->id, u->username, r->accountNumber);
-    int rc = sqlite3_prepare_v2(records_db, sql, -1, &stmt, 0);
-    if (rc != SQLITE_OK)
-    {
-        printf("problem preparing update: %d\n", rc);
-        return rc;
-    }
-    rc = sqlite3_step(stmt);
-    if (rc != SQLITE_DONE)
-    {
-        printf("problem executing update: %d\n", rc);
-        return rc;
-    }
-    rc = sqlite3_finalize(stmt);
-    if (rc != SQLITE_OK) {
-        printf("problem finalising stmt: %d\n", rc);
-    }
-    return rc;
+    if (run_single_stmt(records_db, sql) != SQLITE_OK)
+        return -1;
+    return 0;
 }
 
 int delete_account(struct record* r)
 {
-    sqlite3_stmt* stmt;
-    char* err_msg;
     char sql[255];
     sprintf(sql, "DELETE FROM \"records\" WHERE \"accountNumber\" = \"%d\";", r->accountNumber);
-    int rc = sqlite3_prepare_v2(records_db, sql, -1, &stmt, 0);
-    if (rc != SQLITE_OK)
-    {
-        printf("problem preparing delete: %d\n", rc);
-        return rc;
-    }
-    rc = sqlite3_step(stmt);
-    if (rc != SQLITE_DONE)
-    {
-        printf("problem executing delete: %d\n", rc);
-        return rc;
-    }
-    rc = sqlite3_finalize(stmt);
-    if (rc != SQLITE_OK) {
-        printf("problem finalising stmt: %d\n", rc);
-    }
-    return rc;
+    if (run_single_stmt(records_db, sql) != SQLITE_OK)
+        return -1;
+    return 0;
 }
-
-// int callback(void *NotUsed, int argc, char **argv, char **azColName)
-// {
-//     NotUsed = 0;
-//     for (int i = 0; i < argc; i++)
-//     {
-//         printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-//     }
-//     printf("\n");
-//     return 0;
-// }
