@@ -30,24 +30,12 @@ int run_single_stmt(sqlite3* db, char* queryStr)
 {
     sqlite3_stmt* stmt;
     char* err_msg;
-    int rc = sqlite3_prepare_v2(db, queryStr, -1, &stmt, 0);
-    if (rc != SQLITE_OK)
+    if (sqlite3_exec(db, queryStr, NULL, NULL, &err_msg) != SQLITE_OK)
     {
-        printf("error preparing statement.\n%s\n%s\n", queryStr, err_msg);
+        printf("%s\n", err_msg);
         return -1;
     }
-    rc = sqlite3_step(stmt);
-    if (rc != SQLITE_DONE)
-    {
-        printf("error executing statement.\n%s\n%s\n", queryStr, err_msg);
-        return -1;
-    }
-    rc = sqlite3_finalize(stmt);
-    if (rc != SQLITE_OK) {
-        printf("error finalising statement.\n%s\n%s\n", queryStr, err_msg);
-        return -1;
-    }
-    return rc;
+    return 0;
 }
 
 int create_users_table(void)
