@@ -67,15 +67,15 @@ int create_records_table(void)
     return rc;
 }
 
-int get_all_users(void)
-{
-    char* err_msg;
-    char* sql = "SELECT * FROM \"users\";";
-    int rc = sqlite3_exec(identity_db, sql, callback, NULL, &err_msg);
-    if (rc != SQLITE_OK)
-        printf("%s\n", err_msg);
-    return rc;
-}
+// int get_all_users(void)
+// {
+//     char* err_msg;
+//     char* sql = "SELECT * FROM \"users\";";
+//     int rc = sqlite3_exec(identity_db, sql, callback, NULL, &err_msg);
+//     if (rc != SQLITE_OK)
+//         printf("%s\n", err_msg);
+//     return rc;
+// }
 
 int get_user(struct user* u)
 {
@@ -355,13 +355,13 @@ int delete_account(struct record* r)
     return rc;
 }
 
-int callback(void *NotUsed, int argc, char **argv, char **azColName)
-{
-    NotUsed = 0;
-    for (int i = 0; i < argc; i++)
-    {
-        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-    }
-    printf("\n");
-    return 0;
-}
+// int callback(void *NotUsed, int argc, char **argv, char **azColName)
+// {
+//     NotUsed = 0;
+//     for (int i = 0; i < argc; i++)
+//     {
+//         printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+//     }
+//     printf("\n");
+//     return 0;
+// }
