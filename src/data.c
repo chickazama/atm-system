@@ -24,9 +24,20 @@ const char* CREATE_RECORDS_STMT = "CREATE TABLE IF NOT EXISTS \"records\" (\
 sqlite3* identity_db;
 sqlite3* records_db;
 
-int run_single_stmt(sqlite3*, char*);
+int run_single_stmt(sqlite3*, const char*);
 
-int run_single_stmt(sqlite3* db, char* queryStr)
+int init_db(void)
+{
+    sqlite3_open("data/Identity.db", &identity_db);
+    sqlite3_open("data/Records.db", &records_db);
+    if (run_single_stmt(identity_db, CREATE_USERS_STMT) != SQLITE_OK)
+        return -1;
+    if (run_single_stmt(records_db, CREATE_RECORDS_STMT) != SQLITE_OK)
+        return -1;
+    return 0;
+}
+
+int run_single_stmt(sqlite3* db, const char* queryStr)
 {
     sqlite3_stmt* stmt;
     char* err_msg;
@@ -36,16 +47,6 @@ int run_single_stmt(sqlite3* db, char* queryStr)
         return -1;
     }
     return 0;
-}
-
-int create_users_table(void)
-{
-    sqlite3_open("data/Identity.db", &identity_db);
-    char* err_msg;
-    int rc = sqlite3_exec(identity_db, CREATE_USERS_STMT, NULL, NULL, &err_msg);
-    if (rc != SQLITE_OK)
-        printf("%s\n", err_msg);
-    return rc;
 }
 
 int drop_users_table(void)
@@ -66,16 +67,6 @@ int drop_users_table(void)
         return rc;
     }
     sqlite3_finalize(stmt);
-    return rc;
-}
-
-int create_records_table(void)
-{
-    sqlite3_open("data/Records.db", &records_db);;
-    char* err_msg;
-    int rc = sqlite3_exec(records_db, CREATE_RECORDS_STMT, NULL, NULL, &err_msg);
-    if (rc != SQLITE_OK)
-        printf("%s\n", err_msg);
     return rc;
 }
 

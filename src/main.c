@@ -26,12 +26,14 @@ struct record r;
 
 int main(int argc, char* argv[])
 {
+    if (init_db() != 0)
+    {
+        printf("error initialising database.");
+        return EXIT_FAILURE;
+    }
     reset_user(&u);
     reset_record(&r);
-    create_users_table();
-    create_records_table();
-    // drop_users_table();
-    // while (getchar() != '\n') ;
+    
     int opt = MAIN_MENU;
 
     do
