@@ -456,7 +456,7 @@ int transfer_ownership(struct user* u, struct record* r)
         printf("error transferring ownership\n");
         return -1;
     }
-    printf("\nOwnership of Account #%d transferred from '%s' to '%s.\n", r->accountNumber, u->username, rec.username);
+    printf("\nOwnership of Account #%d transferred from '%s' to '%s'.\n", r->accountNumber, u->username, rec.username);
     printf("\nPress enter to return to your profile. ");
     while (getchar() != '\n') ;
     return PROFILE_MENU;
