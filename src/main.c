@@ -76,7 +76,7 @@ int run(int opt)
         case ACCOUNT_MENU:
             return account_menu(&u, &r);
         case WITHDRAW:
-            if (strcmp(r.type, "current") != 0)
+            if (! (strcmp(r.type, "current") == 0 || strcmp(r.type, "savings") == 0) )
             {
                 printf("\nWithdrawals cannot be made from account of type '%s'.\n", r.type);
                 printf("\nPress enter to return to Account #%d. ", r.accountNumber);
