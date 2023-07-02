@@ -13,13 +13,14 @@
 #define ACCOUNT_MENU 7
 #define WITHDRAW 8
 #define DEPOSIT 9
-#define TRANSFER_OWNERSHIP 10
-#define CLOSE_ACCOUNT 11
+#define EDIT_DETAILS 10
+#define TRANSFER_OWNERSHIP 11
+#define CLOSE_ACCOUNT 12
 
 // Menu Option Counts
 #define MAIN_MENU_OPTS 3
 #define PROFILE_MENU_OPTS 3
-#define ACCOUNT_MENU_OPTS 6
+#define ACCOUNT_MENU_OPTS 7
 #define WITHDRAW_COMPLETE_OPTS 3
 
 // Menu functions
@@ -27,6 +28,7 @@ int main_menu(void);
 int profile_menu(struct user*);
 int view_accounts_menu(struct user*, struct record*);
 int account_menu(struct user*, struct record*);
+int edit_details_menu(struct user*, struct record*);
 // User registration/login/logout
 int register_user(struct user*);
 int login_user(struct user*);
