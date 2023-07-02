@@ -1,4 +1,4 @@
 bin/
+data/
 obj/
 src/include/
-data/*
