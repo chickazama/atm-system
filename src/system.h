@@ -28,7 +28,7 @@
 int main_menu(void);
 int profile_menu(struct user*);
 int view_accounts_menu(struct user*, struct record*);
-int account_menu(struct user*, struct record*);
+int account_menu(struct record*);
 int edit_details_menu(struct user*, struct record*);
 // User registration/login/logout
 int register_user(struct user*);

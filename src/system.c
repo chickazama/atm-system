@@ -5,26 +5,19 @@
 #include "auth.h"
 #include "data.h"
 #include "input.h"
+#include "print.h"
 #include "system.h"
 
-const char* TITLE = "=== 01Founders ATM System ===";
-
-void print_account_details(struct record*);
+const char* MENU_TITLE = "=== 01Founders ATM System ===";
 
 // Run Menus
 int main_menu(void) {
     int ret;
     do
     {
-        system("clear");
-        printf("%s\n", TITLE);
-        printf("\nWelcome to the 01Founders ATM.\n");
-        printf("\n[1] - Register\n");
-        printf("\n[2] - Login\n");
-        printf("\n[3] - Exit\n");
+        print_main_menu();
         ret = input_menu_selection(MAIN_MENU_OPTS);
     } while (ret <= 0);
-
     switch (ret)
     {
         case 1:
@@ -42,12 +35,7 @@ int profile_menu(struct user* u)
     int ret;
     do
     {
-        system("clear");
-        printf("%s\n", TITLE);
-        printf("\n=== Welcome '%s' ===\n", u->username);
-        printf("\n[1] - View Accounts\n");
-        printf("\n[2] - Open New Account\n");
-        printf("\n[3] - Log Out\n");
+        print_profile_menu(u);
         ret = input_menu_selection(PROFILE_MENU_OPTS);
     } while (ret <= 0);
 
@@ -70,7 +58,7 @@ int profile_menu(struct user* u)
 int view_accounts_menu(struct user* u, struct record* r)
 {
     system("clear");
-    printf("%s\n", TITLE);
+    printf("%s\n", MENU_TITLE);
     printf("\n=== Accounts - '%s' ===\n", u->username);
     int n = get_user_records(u);
     if (n < 0)
@@ -115,67 +103,11 @@ int view_accounts_menu(struct user* u, struct record* r)
     return ACCOUNT_MENU;
 }
 
-int account_menu(struct user* u, struct record* r)
+int account_menu(struct record* r)
 {
     int ret;
     do {
-        system("clear");
-        printf("%s\n", TITLE);
-        print_account_details(r);
-        char year[5];
-        int idx = 0;
-        for (int i = 6; i < 10; i++) {
-            year[idx] = r->creationDate[i];
-            idx++;
-        }
-        year[idx] = '\0';
-        int yr = atoi(year);
-        if (yr <= 0)
-        {
-            printf("Error reading year.\n");
-            return -1;
-        }
-        if (strcmp(r->type, "savings") == 0)
-        {
-            double interest = (double)(r->balance)/10000*(7.0/12.0);
-            char start[3];
-            strncpy(start, r->creationDate, 3);
-            start[2] = '\0';
-            printf("\nYou will gain £%.2f interest on day %s of each month.\n", interest, start);
-        } else if (strcmp(r->type, "fixed01") == 0)
-        {
-            int nxt = yr+1;
-            double interest = (double)(4 * r->balance)/10000;
-            char start[6];
-            strncpy(start, r->creationDate, 6);
-            start[5] = '\0';
-            printf("\nInterest gained on %s/%d: £%.2f\n", start, nxt, interest); 
-        } else if (strcmp(r->type, "fixed02") == 0)
-        {
-            int nxt = yr+2;
-            double interest = (double)(10 * r->balance)/10000;
-            char start[6];
-            strncpy(start, r->creationDate, 6);
-            start[5] = '\0';
-            printf("\nInterest gained on %s/%d: £%.2f\n", start, nxt, interest); 
-        } else if (strcmp(r->type, "fixed03") == 0)
-        {
-            int nxt = yr+3;
-            double interest = (double)(24 * r->balance)/10000;
-            char start[6];
-            strncpy(start, r->creationDate, 6);
-            start[5] = '\0';
-            printf("\nInterest gained on %s/%d: £%.2f\n", start, nxt, interest);
-        } else {
-            printf("\nCurrent accounts do not gain interest.\n");
-        }
-        printf("\n[1] - Withdraw\n");
-        printf("\n[2] - Deposit\n");
-        printf("\n[3] - Edit Details\n");
-        printf("\n[4] - Transfer Ownership\n");
-        printf("\n[5] - Close Account\n");
-        printf("\n[6] - Return to 'View Accounts'\n");
-        printf("\n[7] - Return To Profile\n");
+        print_account_menu(r);
         ret = input_menu_selection(ACCOUNT_MENU_OPTS);
     } while (ret <= 0) ;
 
@@ -206,35 +138,18 @@ int edit_details_menu(struct user* u, struct record* r)
 {
     int ret;
     do {
-        system("clear");
-        printf("%s\n", TITLE);
-        print_account_details(r);
-        printf("\n[1] - Update Phone Number\n");
-        printf("\n[2] - Update Country\n");
-        printf("\n[3] - Return to Account #%d Menu\n", r->accountNumber);
-        printf("\n[4] - Return to 'View Accounts'\n");
-        printf("\n[5] - Return to My Profile\n");
+        print_edit_details(r);
         ret = input_menu_selection(EDIT_DETAILS_OPTS);
     } while (ret <= 0);
     switch (ret)
     {
-        char buf[20];
         case 1:
-            printf("\nEnter new phone number: ");
-            if (fgets(buf, 20, stdin) == NULL)
+            if (input_phone_number(r) != 0)
             {
-                perror("fgets");
-                return -1;
-            }
-            buf[strlen(buf)-1] = '\0';
-            int phoneNumber = atoi(buf);
-            if (phoneNumber <= 0)
-            {
-                printf("\nInvalid Phone Number. Press enter to return to Account #%d. ", r->accountNumber);
+                printf("\nInvalid phone number. Press enter to return to Account #%d. ", r->accountNumber);
                 while (getchar() != '\n') ;
                 return ACCOUNT_MENU;
             }
-            r->phoneNumber = phoneNumber;
             if (update_phone_number(u, r) != 0)
             {
                 printf("\nError updating Phone Number. Press enter to return to Account #%d. ", r->accountNumber);
@@ -245,15 +160,12 @@ int edit_details_menu(struct user* u, struct record* r)
             while (getchar() != '\n') ;
             return ACCOUNT_MENU;
         case 2:
-            printf("Enter new country: ");
-            if (fgets(buf, 20, stdin) == NULL)
+            if (input_country(r) != 0)
             {
-                perror("fgets");
-                return -1;
+                printf("\nInvalid country. Press enter to return to Account #%d. ", r->accountNumber);
+                while (getchar() != '\n') ;
+                return ACCOUNT_MENU;
             }
-            buf[strlen(buf)-1] = '\0';
-            memset(r->country, 0, 20);
-            strncpy(r->country, buf, strlen(buf));
             if (update_country(u, r) != 0)
             {
                 printf("\nError updating country. Press enter to return to Account #%d. ", r->accountNumber);
@@ -279,7 +191,7 @@ int edit_details_menu(struct user* u, struct record* r)
 int register_user(struct user* u)
 {
     system("clear");
-    printf("%s\n", TITLE);
+    printf("%s\n", MENU_TITLE);
     printf("\n=== Register ===\n");
 
     if ( input_user(u) == -1 )
@@ -324,7 +236,7 @@ int register_user(struct user* u)
 int login_user(struct user* u)
 {
     system("clear");
-    printf("%s\n", TITLE);
+    printf("%s\n", MENU_TITLE);
     printf("\n=== Login ===\n");
 
     if ( input_user(u) == -1 ) 
@@ -395,7 +307,6 @@ int create_account(struct user* u, struct record* r)
 
 int withdraw(struct user* u, struct record* r)
 {
-    system("clear");
     print_account_details(r);
     printf("\nPlease enter the amount you wish to withdraw (£): ");
     char buf[20];
@@ -429,7 +340,7 @@ int withdraw(struct user* u, struct record* r)
     int ret;
     do {
         system("clear");
-        printf("%s\n", TITLE);
+        printf("%s\n", MENU_TITLE);
         printf("\nYou have withdrawn £%.2f from Account #%d.\nAccount Balance: £%.2f\n", amount, r->accountNumber, (double)(r->balance)/100);
         printf("\n[1] - Return to Account #%d Menu\n", r->accountNumber);
         printf("\n[2] - Return to 'View Accounts'\n");
@@ -453,8 +364,6 @@ int withdraw(struct user* u, struct record* r)
 
 int deposit(struct user* u, struct record* r)
 {
-    system("clear");
-    printf("%s\n", TITLE);
     print_account_details(r);
     printf("\nPlease enter the amount you wish to deposit (£): ");
     char buf[20];
@@ -481,7 +390,7 @@ int deposit(struct user* u, struct record* r)
     int ret;
     do {
         system("clear");
-        printf("%s\n", TITLE);
+        printf("%s\n", MENU_TITLE);
         printf("\nYou have deposited £%.2f into Account #%d.\nNew Account Balance: £%.2f\n", amount, r->accountNumber, (double)(r->balance)/100);
         printf("\n[1] - Return to Account #%d Menu\n", r->accountNumber);
         printf("\n[2] - Return to 'View Accounts'\n");
@@ -505,8 +414,6 @@ int deposit(struct user* u, struct record* r)
 
 int transfer_ownership(struct user* u, struct record* r)
 {
-    system("clear");
-    printf("%s\n", TITLE);
     print_account_details(r);
     printf("\nPlease enter the name of the user to whom you wish to transfer ownership of this account: ");
     char buf[20];
@@ -554,8 +461,6 @@ int transfer_ownership(struct user* u, struct record* r)
 
 int close_account(struct user* u, struct record* r)
 {
-    system("clear");
-    printf("%s\n", TITLE);
     print_account_details(r);
     printf("\nAre you sure you wish to close this account? (y/n): ");
     char buf[20];
@@ -580,14 +485,4 @@ int close_account(struct user* u, struct record* r)
     printf("\nAccount #%d deleted. Press enter to return to your profile. ", r->accountNumber);
     while (getchar() != '\n') ;
     return PROFILE_MENU;
-}
-
-void print_account_details(struct record* r)
-{
-    printf("\n=== Account #%d ===\n", r->accountNumber);
-    printf("Type: %s\n", r->type);
-    printf("Creation Date: %s\n", r->creationDate);
-    printf("Country: %s\n", r->country);
-    printf("Phone Number: %d\n", r->phoneNumber);
-    printf("Balance: £%.2f\n", (double)(r->balance)/100);
 }
