@@ -5,7 +5,6 @@
 #include "include/sqlite3.h"
 
 int init_db(void);
-int drop_users_table(void);
 int get_user(struct user*);
 int create_user(struct user*);
 int delete_user(struct user*);
