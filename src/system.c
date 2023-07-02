@@ -10,7 +10,7 @@
 
 const char* MENU_TITLE = "=== 01Founders ATM System ===";
 
-// Run Menus
+#pragma region // Menu Functions
 int main_menu(void) {
     int ret;
     do
@@ -187,7 +187,9 @@ int edit_details_menu(struct user* u, struct record* r)
     }
     return -1;
 }
-// User registration/login
+#pragma endregion // End of menu functions
+
+#pragma region // User registration/login functions
 int register_user(struct user* u)
 {
     system("clear");
@@ -283,8 +285,9 @@ void logout_user(struct user* u)
     memset(u->username, 0, strlen(u->username));
     memset(u->password, 0, strlen(u->password));
 }
+#pragma endregion // End of user registration/login functions
 
-// Data Access Wrapper
+#pragma region // Data Access Wrappers
 int create_account(struct user* u, struct record* r)
 {
     if ( input_create_account(u, r) == -1 )
@@ -486,3 +489,4 @@ int close_account(struct user* u, struct record* r)
     while (getchar() != '\n') ;
     return PROFILE_MENU;
 }
+#pragma endregion // End of data access wrappers
