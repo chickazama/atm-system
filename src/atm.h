@@ -3,13 +3,15 @@
 
 // Represents a user object.
 // Contains properties corresponding to a unique ID, username, and password.
-struct user {
+struct user
+{
 	int id;
 	char username[20];
 	char password[20];
 };
 
-struct record {
+struct record
+{
 	int id;
 	int ownerId;
 	char owner[20];
