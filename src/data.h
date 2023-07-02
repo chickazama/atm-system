@@ -16,5 +16,7 @@ int update_owner(struct user*, struct record*);
 int delete_account(struct record*);
 int update_phone_number(struct user*, struct record*);
 int update_country(struct user*, struct record*);
+int write_all_users(void);
+int write_all_records(void);
 
 #endif
