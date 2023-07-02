@@ -15,7 +15,7 @@ const char* CREATE_RECORDS_STMT = "CREATE TABLE IF NOT EXISTS \"records\" (\
 \"ownerId\" INTEGER NOT NULL, \
 \"username\" TEXT NOT NULL, \
 \"accountNumber\" INTEGER UNIQUE NOT NULL, \
-\"creationDate\" INTEGER NOT NULL, \
+\"creationDate\" TEXT NOT NULL, \
 \"country\" TEXT NOT NULL, \
 \"phoneNumber\" INTEGER NOT NULL, \
 \"balance\" INTEGER NOT NULL, \
@@ -133,7 +133,7 @@ int create_record(struct user* u, struct record* r)
 \"%d\", \
 \"%s\", \
 \"%d\", \
-\"%d\", \
+\"%s\", \
 \"%s\", \
 \"%d\", \
 \"%d\", \
@@ -156,10 +156,12 @@ int get_user_records(struct user* u)
         printf("error preparing stmt\n");
         return -1;
     }
+    int count = 0;
     int step = sqlite3_step(stmt);
     int user_set = 0;
     while (step == SQLITE_ROW)
     {
+        count++;
         int acct_no = sqlite3_column_int(stmt, 3);
         const char* type = sqlite3_column_text(stmt, 8);
         printf("\nAccount: %d\tType: %s\n", acct_no, type);
@@ -175,7 +177,7 @@ int get_user_records(struct user* u)
         printf("error finalising\n");
         return -1;
     }
-    return rc;
+    return count;
 }
 
 int get_record(struct record* r)
@@ -197,7 +199,7 @@ int get_record(struct record* r)
         r->ownerId = sqlite3_column_int(stmt, 1);
         strcpy(r->owner, sqlite3_column_text(stmt, 2));
         r->accountNumber = sqlite3_column_int(stmt, 3);
-        r->creationDate = sqlite3_column_int(stmt, 4);
+        strcpy(r->creationDate, sqlite3_column_text(stmt, 4));
         strcpy(r->country, sqlite3_column_text(stmt, 5));
         r->phoneNumber = sqlite3_column_int(stmt, 6);
         r->balance = sqlite3_column_int(stmt, 7);
@@ -238,6 +240,24 @@ int delete_account(struct record* r)
 {
     char sql[255];
     sprintf(sql, "DELETE FROM \"records\" WHERE \"accountNumber\" = \"%d\";", r->accountNumber);
+    if (run_single_stmt(records_db, sql) != SQLITE_OK)
+        return -1;
+    return 0;
+}
+
+int update_phone_number(struct user* u, struct record* r)
+{
+    char sql[255];
+    sprintf(sql, "UPDATE \"records\" SET \"phoneNumber\" = \"%d\" WHERE \"accountNumber\" = \"%d\";", r->phoneNumber, r->accountNumber);
+    if (run_single_stmt(records_db, sql) != SQLITE_OK)
+        return -1;
+    return 0;
+}
+
+int update_country(struct user* u, struct record* r)
+{
+    char sql[255];
+    sprintf(sql, "UPDATE \"records\" SET \"country\" = \"%s\" WHERE \"accountNumber\" = \"%d\";", r->country, r->accountNumber);
     if (run_single_stmt(records_db, sql) != SQLITE_OK)
         return -1;
     return 0;
