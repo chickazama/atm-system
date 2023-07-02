@@ -9,6 +9,8 @@
 
 const char* TITLE = "=== 01Founders ATM System ===";
 
+void print_account_details(struct record*);
+
 // Run Menus
 int main_menu(void) {
     int ret;
@@ -38,7 +40,6 @@ int main_menu(void) {
 int profile_menu(struct user* u)
 {
     int ret;
-
     do
     {
         system("clear");
@@ -120,13 +121,7 @@ int account_menu(struct user* u, struct record* r)
     do {
         system("clear");
         printf("%s\n", TITLE);
-        printf("\n=== Account #%d ===\n", r->accountNumber);
-        printf("Type: %s\n", r->type);
-        printf("Creation Date: %s\n", r->creationDate);
-        printf("Country: %s\n", r->country);
-        printf("Phone Number: %d\n", r->phoneNumber);
-        printf("Balance: £%.2f\n", (double)(r->balance)/100);
-
+        print_account_details(r);
         char year[5];
         int idx = 0;
         for (int i = 6; i < 10; i++) {
@@ -213,18 +208,13 @@ int edit_details_menu(struct user* u, struct record* r)
     do {
         system("clear");
         printf("%s\n", TITLE);
-        printf("\n=== Account #%d ===\n", r->accountNumber);
-        printf("Type: %s\n", r->type);
-        printf("Creation Date: %s\n", r->creationDate);
-        printf("Country: %s\n", r->country);
-        printf("Phone Number: %d\n", r->phoneNumber);
-        printf("Balance: £%.2f\n", (double)(r->balance)/100);
+        print_account_details(r);
         printf("\n[1] - Update Phone Number\n");
         printf("\n[2] - Update Country\n");
         printf("\n[3] - Return to Account #%d Menu\n", r->accountNumber);
         printf("\n[4] - Return to 'View Accounts'\n");
         printf("\n[5] - Return to My Profile\n");
-        ret = input_menu_selection(5);
+        ret = input_menu_selection(EDIT_DETAILS_OPTS);
     } while (ret <= 0);
     switch (ret)
     {
@@ -308,7 +298,6 @@ int register_user(struct user* u)
         return MAIN_MENU;
     }
 
-    // Validate username and password here
     if (validate_user(u) != 0)
     {
         printf("\nInvalid username or password. Press enter to return to main menu. ");
@@ -407,10 +396,7 @@ int create_account(struct user* u, struct record* r)
 int withdraw(struct user* u, struct record* r)
 {
     system("clear");
-    printf("%s\n", TITLE);
-    printf("\n=== %s ===\n", u->username);
-    printf("\n=== Account #%d ===\n", r->accountNumber);
-    printf("Balance: £%.2f\n", (double)(r->balance)/100);
+    print_account_details(r);
     printf("\nPlease enter the amount you wish to withdraw (£): ");
     char buf[20];
     if ( fgets(buf, 20, stdin) == NULL)
@@ -421,13 +407,15 @@ int withdraw(struct user* u, struct record* r)
     double amount = atof(buf);
     if (amount <= 0)
     {
-        printf("invalid amount.\n");
-        return -1;
+        printf("Invalid amount: £%s. Press enter to return to Account #%d. ", buf, r->accountNumber);
+        while (getchar() != '\n') ;
+        return ACCOUNT_MENU;
     }
-    if (amount > r->balance)
+    if (amount > (double)(r->balance)/100)
     {
-        printf("too much.\n");
-        return -1;
+        printf("You have insufficient funds to withdraw £%.2f. Press enter to return to Account #%d. ", amount, r->accountNumber);
+        while (getchar() != '\n') ;
+        return ACCOUNT_MENU;
     }
     double balance = (double)r->balance;
     double nBp = balance/100 - amount;
@@ -467,9 +455,7 @@ int deposit(struct user* u, struct record* r)
 {
     system("clear");
     printf("%s\n", TITLE);
-    printf("\n=== %s ===\n", u->username);
-    printf("\n=== Account #%d ===\n", r->accountNumber);
-    printf("Balance: £%.2f\n", (double)(r->balance)/100);
+    print_account_details(r);
     printf("\nPlease enter the amount you wish to deposit (£): ");
     char buf[20];
     if ( fgets(buf, 20, stdin) == NULL)
@@ -496,7 +482,7 @@ int deposit(struct user* u, struct record* r)
     do {
         system("clear");
         printf("%s\n", TITLE);
-        printf("\nYou have deposited £%.2f into Account #%d.\nAccount Balance: £%.2f\n", amount, r->accountNumber, (double)(r->balance)/100);
+        printf("\nYou have deposited £%.2f into Account #%d.\nNew Account Balance: £%.2f\n", amount, r->accountNumber, (double)(r->balance)/100);
         printf("\n[1] - Return to Account #%d Menu\n", r->accountNumber);
         printf("\n[2] - Return to 'View Accounts'\n");
         printf("\n[3] - Return to your profile\n");
@@ -521,9 +507,7 @@ int transfer_ownership(struct user* u, struct record* r)
 {
     system("clear");
     printf("%s\n", TITLE);
-    printf("\n=== %s ===\n", u->username);
-    printf("\n=== Account #%d ===\n", r->accountNumber);
-    printf("Balance: £%.2f\n", (double)(r->balance)/100);
+    print_account_details(r);
     printf("\nPlease enter the name of the user to whom you wish to transfer ownership of this account: ");
     char buf[20];
     if ( fgets(buf, 20, stdin) == NULL)
@@ -572,9 +556,7 @@ int close_account(struct user* u, struct record* r)
 {
     system("clear");
     printf("%s\n", TITLE);
-    printf("\n=== %s ===\n", u->username);
-    printf("\n=== Account #%d ===\n", r->accountNumber);
-    printf("Balance: £%.2f\n", (double)(r->balance)/100);
+    print_account_details(r);
     printf("\nAre you sure you wish to close this account? (y/n): ");
     char buf[20];
     if ( fgets(buf, 20, stdin) == NULL)
@@ -598,4 +580,14 @@ int close_account(struct user* u, struct record* r)
     printf("\nAccount #%d deleted. Press enter to return to your profile. ", r->accountNumber);
     while (getchar() != '\n') ;
     return PROFILE_MENU;
+}
+
+void print_account_details(struct record* r)
+{
+    printf("\n=== Account #%d ===\n", r->accountNumber);
+    printf("Type: %s\n", r->type);
+    printf("Creation Date: %s\n", r->creationDate);
+    printf("Country: %s\n", r->country);
+    printf("Phone Number: %d\n", r->phoneNumber);
+    printf("Balance: £%.2f\n", (double)(r->balance)/100);
 }
