@@ -74,7 +74,7 @@ int run(int opt)
             reset_record(&r);
             return create_account(&u, &r);
         case ACCOUNT_MENU:
-            return account_menu(&u, &r);
+            return account_menu(&r);
         case WITHDRAW:
             if (! (strcmp(r.type, "current") == 0 || strcmp(r.type, "savings") == 0) )
             {
