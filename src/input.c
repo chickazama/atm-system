@@ -158,16 +158,6 @@ int input_create_account(struct user* u, struct record* r)
         }
     }
     
-    // char day[2];
-    // char month[2];
-    // char year[4];
-    // sscanf(buf, "%s/%s/%s", day, month, year);
-    // printf("\nDate entered: %s/%s/%s", day, month, year);
-    // int creationDate = atoi(buf);
-    // if (creationDate <= 0)
-    // {
-    //     return -1;
-    // }
     strncpy(r->creationDate, buf, strlen(buf));
     memset(buf, 0, strlen(buf));
     printf("\nCountry: ");
