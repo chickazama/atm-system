@@ -13,7 +13,7 @@ struct record {
 	int id;
 	int ownerId;
 	char owner[20];
-	int creationDate;
+	char creationDate[20];
 	int accountNumber;
 	char country[20];
 	int phoneNumber;
