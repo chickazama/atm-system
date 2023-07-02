@@ -21,10 +21,11 @@ To build and run the program:
 2. Execute the command 'make'
 3. Execute the command 'bin/atm'
 
-## Header Files
+## Source and Header Files
 
 The variables, structs and function prototypes for use throughout the project
-are defined in a number of header files, each with a different responsibility.
+are defined in a number of header files (.h), each with a different responsibility. The
+function implementations are defined in corresponding source files (.c).
 
 - "atm.h" - defines the core structs, 'user' and 'record'.
 - "auth.h" - defines functions responsible for authentication and authorisation.
