@@ -219,3 +219,35 @@ int input_create_account(struct user* u, struct record* r)
     strncpy(r->type, buf, strlen(buf));
     return 0;
 }
+
+int input_phone_number(struct record* r)
+{
+    char buf[BUF_LEN];
+    printf("\nEnter new phone number: ");
+    if (fgets(buf, BUF_LEN, stdin) == NULL)
+    {
+        perror("fgets");
+        return -1;
+    }
+    buf[strlen(buf)-1] = '\0';
+    int phoneNumber = atoi(buf);
+    if (phoneNumber <= 0)
+        return -1;
+    r->phoneNumber = phoneNumber;
+    return 0;
+}
+
+int input_country(struct record* r)
+{
+    char buf[BUF_LEN];
+    printf("Enter new country: ");
+    if (fgets(buf, BUF_LEN, stdin) == NULL)
+    {
+        perror("fgets");
+        return -1;
+    }
+    buf[strlen(buf)-1] = '\0';
+    memset(r->country, 0, 20);
+    strncpy(r->country, buf, strlen(buf));
+    return 0;
+}
