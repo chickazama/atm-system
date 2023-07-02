@@ -14,8 +14,9 @@
 #define ACCOUNT_MENU 7
 #define WITHDRAW 8
 #define DEPOSIT 9
-#define TRANSFER_OWNERSHIP 10
-#define CLOSE_ACCOUNT 11
+#define EDIT_DETAILS 10
+#define TRANSFER_OWNERSHIP 11
+#define CLOSE_ACCOUNT 12
 
 int run(int);
 void reset_user(struct user*);
@@ -33,7 +34,7 @@ int main(int argc, char* argv[])
     }
     reset_user(&u);
     reset_record(&r);
-    
+
     int opt = MAIN_MENU;
 
     do
@@ -46,7 +47,7 @@ int main(int argc, char* argv[])
         case 0:
             printf("\nThank you for using the 01Founders ATM. Goodbye.\n");
         default:
-            exit(EXIT_FAILURE);
+            return EXIT_FAILURE;
     }
 
     return opt;
@@ -75,9 +76,25 @@ int run(int opt)
         case ACCOUNT_MENU:
             return account_menu(&u, &r);
         case WITHDRAW:
+            if (strcmp(r.type, "current") != 0)
+            {
+                printf("\nWithdrawals cannot be made from account of type '%s'.\n", r.type);
+                printf("\nPress enter to return to Account #%d. ", r.accountNumber);
+                while (getchar() != '\n') ;
+                return ACCOUNT_MENU;
+            }
             return withdraw(&u, &r);
         case DEPOSIT:
+        if (! (strcmp(r.type, "current") == 0 || strcmp(r.type, "savings") == 0) )
+            {
+                printf("\nDeposits cannot be made into account of type '%s'.\n", r.type);
+                printf("\nPress enter to return to Account #%d. ", r.accountNumber);
+                while (getchar() != '\n') ;
+                return ACCOUNT_MENU;
+            }
             return deposit(&u, &r);
+        case EDIT_DETAILS:
+            return edit_details_menu(&u, &r);
         case TRANSFER_OWNERSHIP:
             return transfer_ownership(&u, &r);
         case CLOSE_ACCOUNT:
@@ -102,7 +119,7 @@ void reset_record(struct record* r)
     r->id = 0;
     r->ownerId = 0;
     memset(r->owner, 0, 20);
-    r->creationDate = 0;
+    memset(r->creationDate, 0, 20);
     r->accountNumber = 0;
     memset(r->country, 0, 20);
     r->phoneNumber = 0;
