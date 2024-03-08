@@ -1,6 +1,6 @@
 # ATM Management System
 
-ATM Management System repo, in C, adapted by Matthew Hope.
+ATM Management System repo, in C, by Matthew Hope.
 
 ## How-To Build & Run
 
