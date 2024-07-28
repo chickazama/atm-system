@@ -2,24 +2,37 @@
 
 ATM Management System repo, in C, by Matthew Hope.
 
+## Project Outline
+
+This project is a simple simulation of an ATM Bank Account Management system. Users have the ability to:
+
+- Register a new user account.
+- Login to an existing user account.
+- Create a bank account of various types (current, savings, fixed01, fixed02, fixed03)
+- Deposit and withdraw funds from their bank accounts.
+- Transfer funds to other accounts.
+- Transfer ownership of their accounts to another user.
+- Close existing bank accounts.
+- Update details associated with a bank account (phone number, country, etc.)
+
+Since this is not a real-world application, the details a user may change may not be 'allowed' in production. For example,
+a user may change his/her country to an arbitrary string. To demonstrate interest rates, the user may decide on the creation date for
+the account and their initial deposit. Of course, the money is also (sadly) not real. This project is for demonstration purposes of the C
+programming language and software architecture ONLY.
+
 ## How-To Build & Run
 
-N.B. Don't use Windows (obviously). The 'gcc' compiler and 'make' utility must be installed on your machine.
+N.B. This program is designed to run on Linux machines. The 'gcc' compiler and 'make' utility must be installed on your machine.
 Instructions for setup of these tools may be found online.
 
-This project has a dependency on the C sqlite3 API, but due to file size constraints on Gitea,
-the dependency must be manually installed prior to attempting to build the program.
+Update! - For ease of building and running the program, I have included the SQLite3 dependencies in the upstream repository. Previously,
+I had it ignored from the Git repo, and I included instructions on how to install relevant SQLite3 files and configure the databases, but
+for simplicity's sake, all of the relevant files and folders now may be cloned directly. 
 
-To install the necessary SQLite header and source files:
+1. Change into the 'atm-system' project directory.
+2. Run 'make' to build the program.
+3. Run 'bin/atm' to run the program.
 
-1. Download the 'sqlite-amalgamation-3420000.zip' file from https://www.sqlite.org/download.html
-2. Extract the contents (shell.c, sqlite3.c, sqlite3.h and sqlite3ext.h) into the folder 'src/include'
-
-To build and run the program:
-
-1. Open a terminal from within the project root directory
-2. Execute the command 'make'
-3. Execute the command 'bin/atm'
 
 ## Source and Header Files
 
@@ -44,8 +57,6 @@ are written to relevant .txt files as required for audit.
 
 ## Password Encryption
 
-Passwords are encrpyted with a basic aphine cipher. This encryption algorithm is sufficient
+Passwords are encrypted with a basic aphine cipher. This encryption algorithm is sufficient
 for the audit, but should definitely NOT be used in any production implementation, as it is
 incredibly insecure and trivial to crack.
-
-
