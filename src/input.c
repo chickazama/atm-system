@@ -50,7 +50,7 @@ int input_user(struct user* u)
 {
     struct termios oflags, nflags;
     printf("\nPlease note: Username and Password must contain between 5-18 characters.");
-    printf("\nValid characters: a-z, A-Z, _ (underscore)\n");
+    printf("\nValid characters: a-z, A-Z, 0-9, _ (underscore)\n");
     // Define buffer, prompt user for input
     char buf[BUF_LEN];
     printf("\nUsername: ");
